@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('name');
+            $table->string('slug');
             $table->string('category');
             $table->string('sub');
-            $table->text('description');
             $table->text('story');
             $table->string('image');
             $table->integer('likes')->default(0);

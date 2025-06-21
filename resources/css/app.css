@@ -27,4 +27,12 @@
     button {
         @apply cursor-pointer;
     }
+
+    input {
+        @apply border border-gray-200
+    }
+
+    img {
+        overflow-clip-margin: unset;
+    }
 }

@@ -1,7 +1,7 @@
 import '../css/app.css';
 
 import { createInertiaApp } from '@inertiajs/vue3';
-import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
+// import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import type { DefineComponent } from 'vue';
 import { createApp, h } from 'vue';
 import { ZiggyVue } from 'ziggy-js';
@@ -15,7 +15,7 @@ createInertiaApp({
     resolve: (name) => {
         const page = import.meta.glob<DefineComponent>('./pages/**/*.vue', { eager: true });
         const pageComponent = page[`./pages/${name}.vue`];
-        pageComponent.default.layout = name === 'index' ? false : pageComponent.default.layout || DefaultLayout;
+        pageComponent.default.layout = name === 'index' || name === 'register' || name === 'login' ? false : pageComponent.default.layout || DefaultLayout;
         return pageComponent;
     },
     setup({ el, App, props, plugin }) {

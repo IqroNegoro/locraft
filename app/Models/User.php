@@ -17,10 +17,8 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
+    protected $guarded = [
+        'id'
     ];
 
     /**
@@ -33,6 +31,10 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    protected $appends = [
+        'joined'
+    ];
+
     /**
      * Get the attributes that should be cast.
      *
@@ -42,7 +44,15 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+            'password' => 'hashed'
         ];
+    }
+
+    public function getJoinedAttribute() {
+        return \Carbon\Carbon::parse($this->created_at)->diffForHumans();
+    }
+
+    public function getRouteKeyName() : string {
+        return 'username';
     }
 }

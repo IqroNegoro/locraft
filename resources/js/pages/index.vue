@@ -24,9 +24,9 @@
                     <Link :href="route('home')" class="border border-primary text-primary rounded px-5 py-2 font-semibold text-sm shadow transition">
                         Top Products
                     </Link>
-                    <button class="bg-primary text-white rounded px-5 py-2 font-semibold text-sm shadow hover:bg-gray-800 transition">
+                    <Link :href="route('register')" class="bg-primary text-white rounded px-5 py-2 font-semibold text-sm shadow hover:bg-gray-800 transition">
                         Join Now
-                    </button>
+                    </Link>
                 </div>
             </div>
         </nav>

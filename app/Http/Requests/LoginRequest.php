@@ -2,17 +2,16 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreProductRequest extends FormRequest
+class LoginRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return Auth::check();
+        return false;
     }
 
     /**
@@ -23,12 +22,7 @@ class StoreProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255',
-            'sub' => 'required|string|max:255',
-            'category' => 'required|string|max:255',
-            'images' => 'required|array|min:1|max:5',
-            'images.*' => 'file|image|mimes:jpeg,png,gif,webp|max:2048',
-            'story' => 'required|string',
+            //
         ];
     }
 }
