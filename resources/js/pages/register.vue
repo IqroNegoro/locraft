@@ -47,7 +47,7 @@
                                 type="button"><i class="bx bx-show text-xl"></i></button>
                         </div>
                         <span class="text-xs text-gray-500 mt-1">
-                            ya
+                            Minimal password is 8 characters
                         </span>
                         <span v-if="form.errors.password" class="text-xs text-red-500">{{ form.errors.password }}</span>
                     </div>

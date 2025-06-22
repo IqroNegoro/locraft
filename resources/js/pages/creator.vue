@@ -5,8 +5,9 @@
                 <div class="flex flex-col md:flex-row gap-8">
                     <div class="flex-shrink-0">
                         <div class="relative">
-                            <img :src="user.avatar" :alt="user.name"
-                                class="w-32 h-32 md:w-40 md:h-40 [overflow-clip-margin:unset] rounded-full object-cover shadow-lg">
+                            <object :data="user.avatar" class="w-32 h-32 md:w-40 md:h-40 [overflow-clip-margin:unset] rounded-full object-cover shadow-lg">
+                                <div class="w-32 h-32 md:w-40 md:h-40 bg-gray-200 rounded-full"></div>
+                            </object>
                         </div>
                     </div>
                     <div class="flex-1">
@@ -15,7 +16,7 @@
                                 <h1 class="text-3xl font-playfair font-bold text-primary mb-2">{{ user.name }}</h1>
                                 <p class="text-xl text-gray-600 mb-4">@{{ user.username }}</p>
                             </div>
-                            <div class="flex gap-3">
+                            <div v-if="$page.props.auth.user.id !== user.id" class="flex gap-3">
                                 <button @click="router.put(route('creators.follow', user.username), {}, {
                                     only: ['user']
                                 })"
@@ -42,7 +43,7 @@
                         </div>
                         <span class="text-gray-700 my-4 leading-relaxed">{{ user.bio }}</span>
                         <div class="space-y-3 mb-6">
-                            <div class="flex items-center gap-2 text-gray-600">
+                            <div v-if="user.location" class="flex items-center gap-2 text-gray-600">
                                 <i class="bx bx-map">
                                 </i><span class="text-sm"> {{ user.location }} </span>
                             </div>
@@ -51,36 +52,48 @@
                                 <span class="text-sm">Joined {{ user.joined }}</span>
                             </div>
                         </div>
-                        <div class="flex flex-wrap gap-4"><a href="https://sarahcreates.com" target="_blank"
-                                rel="noopener noreferrer"
-                                class="flex items-center gap-2 text-primary hover:text-gray-800 transition-colors"><svg
-                                    xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" class="lucide lucide-external-link">
-                                    <path d="M15 3h6v6"></path>
-                                    <path d="M10 14 21 3"></path>
-                                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                                </svg><span class="text-sm font-medium">sarahcreates.com</span></a><a
-                                href="https://instagram.com/sarahcreates_" target="_blank" rel="noopener noreferrer"
-                                class="flex items-center gap-2 text-pink-500 hover:text-pink-700 transition-colors"><svg
-                                    xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" class="lucide lucide-instagram">
-                                    <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
-                                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                                    <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
-                                </svg><span class="text-sm font-medium">@sarahcreates_</span></a><a
-                                href="https://youtube.com/@SarahCreatesChannel" target="_blank"
-                                rel="noopener noreferrer"
-                                class="flex items-center gap-2 text-red-500 hover:text-red-700 transition-colors"><svg
-                                    xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" class="lucide lucide-youtube">
-                                    <path
-                                        d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17">
-                                    </path>
-                                    <path d="m10 15 5-3-5-3z"></path>
-                                </svg><span class="text-sm font-medium">SarahCreatesChannel</span></a></div>
+                        <div class="flex flex-wrap gap-4">
+                            <a href="https://instagram.com/sarahcreates_" target="_blank" rel="noopener noreferrer"
+                                class="flex items-center gap-2 text-primary hover:text-gray-800 transition-colors">
+                                <i class='bx bxl-instagram text-lg'></i>
+                                <span class="text-sm font-medium">@sarahcreates_</span>
+                            </a>
+                            <a href="https://twitter.com/sarahcreates_" target="_blank" rel="noopener noreferrer"
+                                class="flex items-center gap-2 text-primary hover:text-gray-800 transition-colors">
+                                <i class='bx bxl-twitter text-lg'></i>
+                                <span class="text-sm font-medium">@sarahcreates_</span>
+                            </a>
+                            <a href="https://facebook.com/sarahcreates" target="_blank" rel="noopener noreferrer"
+                                class="flex items-center gap-2 text-primary hover:text-gray-800 transition-colors">
+                                <i class='bx bxl-facebook text-lg'></i>
+                                <span class="text-sm font-medium">Sarah Creates</span>
+                            </a>
+                            <a href="https://pinterest.com/sarahcreates" target="_blank" rel="noopener noreferrer"
+                                class="flex items-center gap-2 text-primary hover:text-gray-800 transition-colors">
+                                <i class='bx bxl-pinterest text-lg'></i>
+                                <span class="text-sm font-medium">SarahCreates</span>
+                            </a>
+                            <a href="mailto:sarahcreates@email.com" target="_blank" rel="noopener noreferrer"
+                                class="flex items-center gap-2 text-primary hover:text-gray-800 transition-colors">
+                                <i class='bx bx-envelope text-lg'></i>
+                                <span class="text-sm font-medium">Email</span>
+                            </a>
+                            <a href="https://sarahcreates.com" target="_blank" rel="noopener noreferrer"
+                                class="flex items-center gap-2 text-primary hover:text-gray-800 transition-colors">
+                                <i class='bx bx-globe text-lg'></i>
+                                <span class="text-sm font-medium">sarahcreates.com</span>
+                            </a>
+                            <a href="https://sarahcreates.com" target="_blank" rel="noopener noreferrer"
+                                class="flex items-center gap-2 text-primary hover:text-gray-800 transition-colors">
+                                <i class='bx bx-link-external text-lg'></i>
+                                <span class="text-sm font-medium">External Link</span>
+                            </a>
+                            <a href="https://youtube.com/@SarahCreatesChannel" target="_blank" rel="noopener noreferrer"
+                                class="flex items-center gap-2 text-primary hover:text-gray-800 transition-colors">
+                                <i class='bx bxl-youtube text-lg'></i>
+                                <span class="text-sm font-medium">SarahCreatesChannel</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -97,7 +110,7 @@
                             <button @click.stop.prevent="router.put(route('products.like', product.slug))"
                                 class="flex items-center gap-1">
                                 <i class="bx"
-                                    :class="{ 'bxs-heart': product.likes_exists, 'bx-heart': !product.likes_exists }"></i>
+                                    :class="{ 'bxs-heart': product.liked_exists, 'bx-heart': !product.liked_exists }"></i>
                                 <span>{{ product.likes }}</span>
                             </button>
                             <div class="flex items-center gap-1">

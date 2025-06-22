@@ -20,6 +20,13 @@
         @apply outline-none appearance-none;
     }
 
+    [contenteditable]:empty:before{
+        content: attr(placeholder);
+        pointer-events: none;
+        display: block; /* For Firefox */
+        color: grey;
+    }
+
     html {
         @apply font-inter;
     }

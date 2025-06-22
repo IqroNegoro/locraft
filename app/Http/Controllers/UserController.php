@@ -13,7 +13,8 @@ use Inertia\Inertia;
 
 class UserController extends Controller
 {
-    public function register() {
+    public function register()
+    {
         return Inertia::render('register');
     }
 
@@ -34,7 +35,7 @@ class UserController extends Controller
                 'password' => $validated['password'],
             ])) {
                 $request->session()->regenerate();
-        
+
                 return redirect()->route('creators', Auth::user()->username)->with('success', 'Registration success, welcome to lokafest!');
             } else {
                 return back()->with('error', 'Email or password wrong!');
@@ -44,7 +45,8 @@ class UserController extends Controller
         }
     }
 
-    public function login() {
+    public function login()
+    {
         return Inertia::render('login');
     }
 
@@ -58,7 +60,7 @@ class UserController extends Controller
                 'password' => $validated['password'],
             ])) {
                 $request->session()->regenerate();
-        
+
                 return redirect()->route('home');
             } else {
                 return back()->with('error', 'Email or password wrong!');
@@ -66,6 +68,15 @@ class UserController extends Controller
         } catch (\Throwable $e) {
             return back()->with('error', 'Oops, we cannot proceed your request right now, try again later');
         }
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('login')->with('success', 'You have been logged out!');
     }
 
     /**
@@ -87,8 +98,8 @@ class UserController extends Controller
     public function show(User $user)
     {
         $user = $user->loadExists('followers');
-        $products = Product::withCount('images')->withExists('likes')->get();
-        $product = request()->get('product') ? Product::with('images')->withExists('likes')->firstWhere('slug', request()->get('product')) : null;
+        $products = Product::whereUserId($user->id)->withCount('images')->withExists('liked')->get();
+        $product = request()->get('product') ? Product::with('images')->withExists('liked')->firstWhere('slug', request()->get('product')) : null;
         return Inertia::render('creator', compact('user', 'products', 'product'));
     }
 
@@ -122,7 +133,7 @@ class UserController extends Controller
             $follower = Follow::where('user_id', Auth::id())
                 ->where('followed_user_id', $user->id)
                 ->first();
-    
+
             if ($follower) {
                 $follower->delete();
                 $user->decrement('followers');

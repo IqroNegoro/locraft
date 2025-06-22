@@ -2,7 +2,7 @@
     <div class="flex flex-col items-center justify-center w-full gap-16 bg-gray-50">
         <div class="flex flex-col items-center gap-8">
             <div class="text-xs text-gray-500">
-                Product of the Day · <span class="underline cursor-pointer hover:text-primary">Jun 23, 2023</span> · Score 7.2 out 10
+                Product of the week · <span class="underline cursor-pointer hover:text-primary"></span> {{ top_products[0] }} Total Likes
             </div>
             <div class="flex flex-col-reverse md:flex-row justify-between gap-4 w-full">
                 <div class="flex flex-col justify-center">
@@ -257,7 +257,12 @@
     </div>
 </template>
 <script setup lang="ts">
+import { IProduct } from '@/types';
 import { ref } from 'vue';
+
+defineProps<{
+    top_products: IProduct[]
+}>();
 
 const selectedCategory = ref();
 const selectedLikes = ref();

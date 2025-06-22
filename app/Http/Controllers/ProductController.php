@@ -90,9 +90,17 @@ class ProductController extends Controller
     public function show(Product $product)
     {
         return Inertia::render('product', [
-            'product' => $product->load(['images', 'user' => function($query) {
-                return $query->withExists('followers');
-            }])->loadExists('likes')
+            'product' => $product->load([
+                'images', 
+                'user' => function($query) {
+                    return $query->withExists('followers');
+                }, 
+            ])->loadExists('likes'),
+            'ratings' => $product->reviews()
+                ->selectRaw('rating, COUNT(*) as total')
+                ->groupBy('rating')
+                ->pluck('total', 'rating'),
+            'reviews' => $product->reviews()->with('user')->orderBy('rating', 'desc')->orderBy('created_at', 'desc')->limit(10)->get()
         ]);
     }
 

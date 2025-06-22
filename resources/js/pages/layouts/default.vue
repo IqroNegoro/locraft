@@ -34,10 +34,52 @@
                 <Link :href="route('products.create')"
                     class="border border-gray-200 text-primary text-sm px-3 py-1 rounded hover:bg-secondary transition">
                 Submit Product</Link>
-                <Link v-if="$page.props.auth.user" :href="route('creators', $page.props.auth.user.username)" class="flex items-center">
-                    <img :src="$page.props.auth.user.avatar" :alt="$page.props.auth.user.name"
-                        class="w-12 aspect-square object-cover rounded-full">
-                </Link>
+                <div v-if="$page.props.auth.user" class="relative group">
+                    <button
+                        class="flex items-center focus:outline-none"
+                        @click="showDropdown = !showDropdown"
+                        type="button"
+                    >
+                        <object :data="$page.props.auth.user.avatar" :alt="$page.props.auth.user.name"
+                            class="w-12 aspect-square object-cover rounded-full">
+                            <div class="w-12 aspect-square bg-gray-200 rounded-full"></div>
+                        </object>
+                    </button>
+                    <transition name="fade">
+                        <div
+                            v-if="showDropdown"
+                            class="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow border border-gray-200 z-50"
+                        >
+                            <div class="px-4 py-3 border-b border-gray-200">
+                                <span class="font-semibold text-sm text-gray-800">Menu</span>
+                            </div>
+                            <div class="flex flex-col items-center justify-center text-gray-400 text-sm">
+                                <Link 
+                                    :href="route('creators', $page.props.auth.user.username)" 
+                                    class="flex items-center gap-2 px-4 py-2 text-sm text-primary hover:bg-gray-50 w-full justify-start"
+                                >
+                                    <i class="bx bx-user text-lg"></i>
+                                    Profile
+                                </Link>
+                                <Link href="#"
+                                    class="flex items-center gap-2 px-4 py-2 text-sm text-primary hover:bg-gray-50 w-full justify-start"
+                                >
+                                    <i class="bx bx-cog text-lg"></i>
+                                    Setting
+                                </Link>
+                                <form @submit.prevent="router.delete(route('logout'))" method="POST" class="w-full">
+                                    <button 
+                                        type="submit" 
+                                        class="flex items-center gap-2 w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-gray-50"
+                                    >
+                                        <i class="bx bx-log-out text-lg"></i>
+                                        Logout
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </transition>
+                </div>
                 <Link v-else :href="route('login')" class="flex items-center border border-gray-200 p-1.5">
                     <i class="bx bx-log-in"></i>
                 </Link>
@@ -146,8 +188,12 @@
     </div>
 </template>
 <script setup lang="ts">
-import { Link } from '@inertiajs/vue3';
+import { Link, router, usePage } from '@inertiajs/vue3';
+import { ref, watch } from 'vue';
 
+const showDropdown = ref<boolean>(false);
+
+watch(() => usePage().url, () => showDropdown.value = false);
 </script>
 <style scoped>
 .toast-fade-enter-active,

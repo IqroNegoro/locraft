@@ -80,7 +80,7 @@ export interface IProductImage {
 
 export interface IUserProduct extends Pick<IProduct, 'name' | 'slug' | 'category' | 'image' | 'likes' | 'views'> {
     images_count: number
-    likes_exists: boolean
+    liked_exists: boolean
 }
 
 export interface IUserProductModal extends IUserProduct {
