@@ -78,16 +78,13 @@ export interface IProductImage {
 }
 
 
-export interface IUserProduct {
-    name: string
-    slug: string
-    category: string
-    image: string
-    likes: number
-    views: number
+export interface IUserProduct extends Pick<IProduct, 'name' | 'slug' | 'category' | 'image' | 'likes' | 'views'> {
     images_count: number
+    likes_exists: boolean
 }
 
-export interface IUserProductModal extends IProduct {
+export interface IUserProductModal extends IUserProduct {
     images: IProductImage[]
+    sub: string
+    created_at: Date | string
 }

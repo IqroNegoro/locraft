@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
+use App\Models\Follow;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -33,7 +35,31 @@ class UserController extends Controller
             ])) {
                 $request->session()->regenerate();
         
-                return redirect()->route('home')->with('success', 'Registration success, welcome to lokafest!');
+                return redirect()->route('creators', Auth::user()->username)->with('success', 'Registration success, welcome to lokafest!');
+            } else {
+                return back()->with('error', 'Email or password wrong!');
+            }
+        } catch (\Throwable $e) {
+            return back()->with('error', 'Oops, we cannot proceed your request right now, try again later');
+        }
+    }
+
+    public function login() {
+        return Inertia::render('login');
+    }
+
+    public function loginPost(LoginRequest $request)
+    {
+        try {
+            $validated = $request->validated();
+
+            if (Auth::attempt([
+                'email' => $validated['email'],
+                'password' => $validated['password'],
+            ])) {
+                $request->session()->regenerate();
+        
+                return redirect()->route('home');
             } else {
                 return back()->with('error', 'Email or password wrong!');
             }
@@ -60,8 +86,9 @@ class UserController extends Controller
 
     public function show(User $user)
     {
-        $products = Product::withCount('images')->get();
-        $product = request()->get('product') ? Product::with('images')->firstWhere('slug', request()->get('product')) : null;
+        $user = $user->loadExists('followers');
+        $products = Product::withCount('images')->withExists('likes')->get();
+        $product = request()->get('product') ? Product::with('images')->withExists('likes')->firstWhere('slug', request()->get('product')) : null;
         return Inertia::render('creator', compact('user', 'products', 'product'));
     }
 
@@ -87,5 +114,29 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         //
+    }
+
+    public function follow(User $user)
+    {
+        try {
+            $follower = Follow::where('user_id', Auth::id())
+                ->where('followed_user_id', $user->id)
+                ->first();
+    
+            if ($follower) {
+                $follower->delete();
+                $user->decrement('followers');
+                return back()->with('success', "You are unfollowing $user->name");
+            } else {
+                Follow::create([
+                    'user_id' => Auth::id(),
+                    'followed_user_id' => $user->id,
+                ]);
+                $user->increment('followers');
+                return back()->with('success', "You are starting to follow $user->name");
+            }
+        } catch (\Throwable $e) {
+            return back()->with('error', "Failed to follow creator, try again later");
+        }
     }
 }

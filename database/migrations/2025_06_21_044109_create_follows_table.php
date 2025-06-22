@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('follows', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreignId('follower_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreignId('followed_user_id')->references('id')->on('users')->onDelete('cascade');
 
-            $table->unique(['user_id', 'follower_id']);
+            $table->unique(['user_id', 'followed_user_id']);
             $table->timestamps();
         });
     }

@@ -54,8 +54,8 @@
                 {{ product.sub }}
             </p>
             <div class="flex gap-2 mt-2">
-                <button class="flex-1 bg-primary text-white rounded-lg px-4 py-2 font-semibold flex items-center justify-center gap-2 hover:bg-primary/90 transition">
-                <i class="bx bxs-heart"></i> Like
+                <button @click="router.put(route('products.like', product.slug))" class="flex-1 bg-primary text-white rounded-lg px-4 py-2 font-semibold flex items-center justify-center gap-2 hover:bg-primary/90 transition">
+                <i class="bx" :class="{'bxs-heart': product.likes_exists, 'bx-heart': !product.likes_exists}"></i> {{ product.likes_exists ? 'Liked' : 'Like' }}
                 </button>
                 <button class="bg-gray-100 text-primary rounded-lg px-3 py-2 flex items-center justify-center hover:bg-gray-200 transition">
                 <i class="bx bx-share-alt"></i>
@@ -63,6 +63,9 @@
                 <button class="bg-gray-100 text-primary rounded-lg px-3 py-2 flex items-center justify-center hover:bg-gray-200 transition">
                 <i class="bx bx-bookmark"></i>
                 </button>
+                <Link :href="route('products.show', product.slug)" class="bg-gray-100 text-primary rounded-lg px-3 py-2 flex items-center justify-center hover:bg-gray-200 transition">
+                <i class="bx bx-link-external"></i>
+                </Link>
             </div>
             <Link :href="route('creators', user.username)" preserve-state class="absolute top-3 right-3 text-gray-400 hover:text-primary transition text-xl" @click="$emit('close')">
                 <i class="bx bx-x"></i>
@@ -73,7 +76,7 @@
 </template>
 <script setup lang="ts">
 import { IUserProductModal, IUserProfile } from '@/types';
-import { Link } from '@inertiajs/vue3';
+import { Link, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
 
 defineProps<{

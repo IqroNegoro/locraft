@@ -35,4 +35,8 @@
     img {
         overflow-clip-margin: unset;
     }
+
+    button > i {
+        @apply flex justify-center items-center;
+    }
 }

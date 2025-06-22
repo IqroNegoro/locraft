@@ -4,8 +4,11 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable
 {
@@ -48,11 +51,24 @@ class User extends Authenticatable
         ];
     }
 
-    public function getJoinedAttribute() {
-        return \Carbon\Carbon::parse($this->created_at)->diffForHumans();
+    public function followers(): HasMany
+    {
+        return $this->hasMany(Follow::class, 'followed_user_id', 'id');
     }
 
-    public function getRouteKeyName() : string {
+    public function follow()
+    {
+        return $this->hasOne(Follow::class, 'user_id', 'id')
+            ->where('follower_id', Auth::id());
+    }
+
+    public function getJoinedAttribute()
+    {
+        return \Carbon\Carbon::parse($this->created_at)->translatedFormat('F Y');
+    }
+
+    public function getRouteKeyName(): string
+    {
         return 'username';
     }
 }

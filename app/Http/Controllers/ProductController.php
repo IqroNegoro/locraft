@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use App\Models\Like;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -49,7 +51,7 @@ class ProductController extends Controller
                 array_push($images, $basename);
             }
 
-            DB::transaction(function() use ($validated, $images, $thumbnail) {
+            $product = DB::transaction(function() use ($validated, $images, $thumbnail) {
                 $product = Product::create([
                     'user_id' => Auth::id(),
                     'slug' => Str::slug($validated['name']) . rand(1000, 9999),
@@ -65,9 +67,11 @@ class ProductController extends Controller
                         'image' => $image
                     ];
                 }, $images));
+
+                return $product;
             });
 
-            return redirect()->route('home')->with('success', 'Your product successfully submitted');
+            return redirect()->route('products.show', $product->slug)->with('success', 'Your product successfully submitted');
         } catch (\Throwable $e) {
             if (!empty($images)) {
                 foreach ($images as $image) {
@@ -85,7 +89,11 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        //
+        return Inertia::render('product', [
+            'product' => $product->load(['images', 'user' => function($query) {
+                return $query->withExists('followers');
+            }])->loadExists('likes')
+        ]);
     }
 
     /**
@@ -110,5 +118,29 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         //
+    }
+
+    public function like(Request $request, Product $product)
+    {
+        try {
+            $liked = Like::where('user_id', Auth::id())
+            ->where('product_id', $product->id)->first();
+            
+            if ($liked) {
+                $liked->delete();
+                $product->decrement('likes');
+                return back();
+            } else {
+                Like::create([
+                    'user_id' => Auth::id(),
+                    'product_id' => $product->id,
+                ]);
+                $product->increment('likes');
+                return back()->with('success', 'Product liked');
+            }
+        } catch (\Throwable $e) {
+            return $e;
+            return back()->with('error', 'Failed to like product, try again');
+        }
     }
 }

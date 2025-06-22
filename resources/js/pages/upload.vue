@@ -35,14 +35,14 @@
                 </div>
                 <div class="flex flex-col gap-1">
                     <label class="text-sm font-medium leading-none" for="pictures">Pictures</label>
-                    <div class="grid grid-cols-5 grid-rows-1 gap-2">
+                    <div v-memo="form.images" class="grid grid-cols-4 grid-rows-1 gap-2">
                         <div v-for="(image, i) in form.images" :key="i" class="relative">
                             <img :src="render(image)" :alt="image.name" class="w-full aspect-square object-cover rounded-lg">
                             <button type="button" @click="form.images.splice(i, 1)" class="flex justify-center items-center bg-primary text-white p-1 rounded-full absolute right-1 top-1">
                                 <i class="bx bx-x"></i>
                             </button>
                         </div>
-                        <label v-for="i in 5 - form.images.length" :key="i" type="button" for="pictures" class="w-full rounded-lg aspect-square object-cover bg-gray-200"></label>
+                        <label v-for="i in 4 - form.images.length" :key="i" type="button" for="pictures" class="w-full rounded-lg aspect-square object-cover bg-gray-200"></label>
                     </div>
                     <span class="text-gray-500 text-xs">First pictures will be used for thumbnail, so make sure showing your best picture</span>
                     <input type="file" id="pictures" hidden multiple accept="image/*" @change="handleAddImage">
@@ -55,7 +55,6 @@
                     <textarea v-model="form.story" class="border rounded-lg p-2 border-gray-200" name="" id="story"></textarea>
                     <span v-if="form.errors?.story" class="text-xs text-red-500">{{ form.errors.story }}</span>
                 </div>
-                {{$page.props}}
                 <button
                     class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 text-white h-10 px-4 py-2 w-full"
                     type="submit">
@@ -88,13 +87,17 @@ function handleAddImage(event: Event) {
     const input = event.target as HTMLInputElement;
     if (!input.files) return;
 
+    let files = [...input.files];
+
+    if (form.images.length + files.length > 4) files = files.splice(0,  4 - form.images.length);
+
     const maxSize = 2 * 1024 * 1024;
     const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
 
     const validFiles: File[] = [];
 
-    for (let i = 0; i < input.files.length; i++) {
-        const file = input.files[i];
+    for (let i = 0; i < files.length; i++) {
+        const file = files[i];
         if (file.size > maxSize) {
             alert(`File "${file.name}" exceed 2mb size`);
             continue;
@@ -107,6 +110,7 @@ function handleAddImage(event: Event) {
     }
 
     form.images = [...form.images, ...validFiles];
+    input.value = "";
 }
 
 </script>

@@ -38,6 +38,9 @@
                     <img :src="$page.props.auth.user.avatar" :alt="$page.props.auth.user.name"
                         class="w-12 aspect-square object-cover rounded-full">
                 </Link>
+                <Link v-else :href="route('login')" class="flex items-center border border-gray-200 p-1.5">
+                    <i class="bx bx-log-in"></i>
+                </Link>
             </div>
         </nav>
 
@@ -127,7 +130,7 @@
         </footer>
 
         <Transition name="toast-slide">
-            <div v-if="$page.props.success || $page.props.error" class="fixed z-50 bottom-6 right-6 max-w-96 w-full">
+            <div v-if="$page.props.success || $page.props.error" class="fixed z-50 bottom-2 right-6 max-w-96 w-full">
                 <div v-if="$page.props.success" @click="$page.props.success = null"
                     class="cursor-pointer flex items-center gap-2 bg-primary text-white px-4 py-3 rounded-lg shadow-lg mb-2 transition hover:bg-green-600">
                     <i class="bx bx-check-circle text-xl"></i>
@@ -144,7 +147,6 @@
 </template>
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
-
 
 </script>
 <style scoped>

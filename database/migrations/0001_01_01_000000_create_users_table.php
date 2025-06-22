@@ -21,9 +21,9 @@ return new class extends Migration
             $table->string('avatar')->nullable();
             $table->string('bio')->nullable();
             $table->string('location')->nullable();
-            $table->integer('followers')->nullable();
-            $table->integer('products')->nullable();
-            $table->integer('following')->nullable();
+            $table->integer('followers')->default(0);
+            $table->integer('products')->default(0);
+            $table->integer('following')->default(0);
             $table->rememberToken();
             $table->timestamps();
         });
