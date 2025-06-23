@@ -98,8 +98,8 @@ class UserController extends Controller
     public function show(User $user)
     {
         $user = $user->loadExists('followers');
-        $products = Product::whereUserId($user->id)->withCount('images')->withExists('liked')->get();
-        $product = request()->get('product') ? Product::with('images')->withExists('liked')->firstWhere('slug', request()->get('product')) : null;
+        $products = Product::whereUserId($user->id)->with('category')->withCount('images')->withExists('liked')->get();
+        $product = request()->get('product') ? Product::with('category')->with('images')->withExists('liked')->firstWhere('slug', request()->get('product')) : null;
         return Inertia::render('creator', compact('user', 'products', 'product'));
     }
 
@@ -136,14 +136,12 @@ class UserController extends Controller
 
             if ($follower) {
                 $follower->delete();
-                $user->decrement('followers');
                 return back()->with('success', "You are unfollowing $user->name");
             } else {
                 Follow::create([
                     'user_id' => Auth::id(),
                     'followed_user_id' => $user->id,
                 ]);
-                $user->increment('followers');
                 return back()->with('success', "You are starting to follow $user->name");
             }
         } catch (\Throwable $e) {

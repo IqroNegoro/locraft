@@ -31,19 +31,31 @@
         @apply font-inter;
     }
 
-    button {
-        @apply cursor-pointer;
+    button, a {
+        @apply cursor-pointer rounded;
     }
 
     input {
         @apply border border-gray-200
     }
 
-    img {
+    img, object {
         overflow-clip-margin: unset;
     }
 
-    button > i {
-        @apply flex justify-center items-center;
+    * > i {
+        @apply !flex !justify-center !items-center;
+    }
+
+    ::-webkit-scrollbar {
+        @apply w-1 h-1;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        @apply bg-primary/50;
+    }
+
+    ::-webkit-scrollbar-track {
+        @apply bg-transparent;
     }
 }

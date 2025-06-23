@@ -34,51 +34,49 @@
                 <Link :href="route('products.create')"
                     class="border border-gray-200 text-primary text-sm px-3 py-1 rounded hover:bg-secondary transition">
                 Submit Product</Link>
-                <div v-if="$page.props.auth.user" class="relative group">
+                <div>
+                    <i class="bx bx-bell text-2xl"></i>
+                </div>
+                <div v-if="$page.props.auth.user" class="flex gap-4 items-center relative group">
                     <button
                         class="flex items-center focus:outline-none"
                         @click="showDropdown = !showDropdown"
                         type="button"
                     >
-                        <object :data="$page.props.auth.user.avatar" :alt="$page.props.auth.user.name"
-                            class="w-12 aspect-square object-cover rounded-full">
-                            <div class="w-12 aspect-square bg-gray-200 rounded-full"></div>
-                        </object>
+                        <Avatar :src="$page.props.auth.user.avatar" class="w-10 h-10" />
                     </button>
-                    <transition name="fade">
-                        <div
-                            v-if="showDropdown"
-                            class="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow border border-gray-200 z-50"
-                        >
-                            <div class="px-4 py-3 border-b border-gray-200">
-                                <span class="font-semibold text-sm text-gray-800">Menu</span>
-                            </div>
-                            <div class="flex flex-col items-center justify-center text-gray-400 text-sm">
-                                <Link 
-                                    :href="route('creators', $page.props.auth.user.username)" 
-                                    class="flex items-center gap-2 px-4 py-2 text-sm text-primary hover:bg-gray-50 w-full justify-start"
-                                >
-                                    <i class="bx bx-user text-lg"></i>
-                                    Profile
-                                </Link>
-                                <Link href="#"
-                                    class="flex items-center gap-2 px-4 py-2 text-sm text-primary hover:bg-gray-50 w-full justify-start"
-                                >
-                                    <i class="bx bx-cog text-lg"></i>
-                                    Setting
-                                </Link>
-                                <form @submit.prevent="router.delete(route('logout'))" method="POST" class="w-full">
-                                    <button 
-                                        type="submit" 
-                                        class="flex items-center gap-2 w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-gray-50"
-                                    >
-                                        <i class="bx bx-log-out text-lg"></i>
-                                        Logout
-                                    </button>
-                                </form>
-                            </div>
+                    <div
+                        v-if="showDropdown"
+                        class="absolute top-full right-0 mt-2 w-64 bg-white rounded-lg shadow border border-gray-200 z-50"
+                    >
+                        <div class="px-4 py-3 border-b border-gray-200">
+                            <span class="font-semibold text-sm text-gray-800">Menu</span>
                         </div>
-                    </transition>
+                        <div class="flex flex-col items-center justify-center text-gray-400 text-sm">
+                            <Link 
+                                :href="route('creators', $page.props.auth.user.username)" 
+                                class="flex items-center gap-2 px-4 py-2 text-sm text-primary hover:bg-gray-50 w-full justify-start"
+                            >
+                                <i class="bx bx-user text-lg"></i>
+                                Profile
+                            </Link>
+                            <Link :href="route('setting')"
+                                class="flex items-center gap-2 px-4 py-2 text-sm text-primary hover:bg-gray-50 w-full justify-start"
+                            >
+                                <i class="bx bx-cog text-lg"></i>
+                                Setting
+                            </Link>
+                            <form @submit.prevent="router.delete(route('logout'))" method="POST" class="w-full">
+                                <button 
+                                    type="submit" 
+                                    class="flex items-center gap-2 w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-gray-50"
+                                >
+                                    <i class="bx bx-log-out text-lg"></i>
+                                    Logout
+                                </button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
                 <Link v-else :href="route('login')" class="flex items-center border border-gray-200 p-1.5">
                     <i class="bx bx-log-in"></i>
@@ -171,7 +169,7 @@
             </div>
         </footer>
 
-        <Transition name="toast-slide">
+        <Transition name="toast-slide" class="max-sm:hidden">
             <div v-if="$page.props.success || $page.props.error" class="fixed z-50 bottom-2 right-6 max-w-96 w-full">
                 <div v-if="$page.props.success" @click="$page.props.success = null"
                     class="cursor-pointer flex items-center gap-2 bg-primary text-white px-4 py-3 rounded-lg shadow-lg mb-2 transition hover:bg-green-600">
@@ -188,6 +186,7 @@
     </div>
 </template>
 <script setup lang="ts">
+import Avatar from '@/components/Avatar.vue';
 import { Link, router, usePage } from '@inertiajs/vue3';
 import { ref, watch } from 'vue';
 

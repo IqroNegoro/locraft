@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -51,15 +52,24 @@ class User extends Authenticatable
         ];
     }
 
-    public function followers(): HasMany
+    public function followers()
     {
-        return $this->hasMany(Follow::class, 'followed_user_id', 'id');
+        return $this->belongsToMany(
+            User::class,
+            'follows',
+            'followed_user_id',
+            'user_id'
+        );
     }
 
-    public function follow()
+    public function following()
     {
-        return $this->hasOne(Follow::class, 'user_id', 'id')
-            ->where('follower_id', Auth::id());
+        return $this->belongsToMany(
+            User::class,
+            'follows',
+            'user_id',
+            'followed_user_id'
+        );
     }
 
     public function getJoinedAttribute()

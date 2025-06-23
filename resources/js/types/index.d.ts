@@ -38,53 +38,109 @@ export interface User {
 export type BreadcrumbItemType = BreadcrumbItem;
 
 // Custom Types
+export interface IUser {
+    id: number;
+    name: string;
+    username: string;
+    email: string;
+    email_verified_at: string | null;
+    password: string;
+    avatar?: string | null;
+    bio?: string | null;
+    location?: string | null;
+    followers: number;
+    products: number;
+    following: number;
+    remember_token?: string | null;
+    created_at: string;
+    updated_at: string;
 
-export interface IUserProfile {
-    name: string
-    username: string
-    avatar: string
-    bio: string
-    location: string
-    followers: string
-    following: string
-    products: string
-    joined: string
+    joined?: string;
+
+    followers_exists?: boolean
+}
+
+export interface ICategory {
+    id: number;
+    name: string;
+    slug: string;
+    description?: string | null;
+    created_at: string;
+    updated_at: string;
 }
 
 export interface IProduct {
-    id: number
-    user_id: number
-    name: string
-    slug: string
-    category: string
-    sub: string
-    story: string
-    image: string
-    likes: number
-    views: number
-    link: string
-    created_at: string
-    updated_at: string
+    id: number;
+    user_id: number;
+    name: string;
+    slug: string;
+    category_id: number;
+    sub: string;
+    story: string;
+    image: string;
+    likes: number;
+    total_likes?: number | null;
+    views: number;
+    link: string;
+    created_at: string;
+    updated_at: string;
+
+    user?: IUser;
+    category: ICategory;
+    images?: IProductImage[];
+    likes_list?: ILike[];
+    liked?: ILike | null;
+    reviews?: IReview[];
+
+    image_url?: string;
+    liked_exists?: boolean;
+    images_count?: number;
+    createdAt?: string;
 }
 
 export interface IProductImage {
-    id: number
-    product_id: number
-    image: string
-    alt_text?: string | null
-    order: number
-    created_at: string
-    updated_at: string
+    id: number;
+    product_id: number;
+    image: string;
+    alt_text?: string | null;
+    order: number;
+    created_at: string;
+    updated_at: string;
+
+    product?: IProduct;
+
+    image_url?: string;
 }
 
+export interface IReview {
+    id: number;
+    user_id: number;
+    product_id: number;
+    rating: number;
+    review: string;
+    created_at: string;
+    updated_at: string;
 
-export interface IUserProduct extends Pick<IProduct, 'name' | 'slug' | 'category' | 'image' | 'likes' | 'views'> {
-    images_count: number
-    liked_exists: boolean
+    user?: IUser;
+
+    createdAt?: string;
 }
 
-export interface IUserProductModal extends IUserProduct {
-    images: IProductImage[]
-    sub: string
-    created_at: Date | string
+export interface ILike {
+    id: number;
+    user_id: number;
+    product_id: number;
+    created_at: string;
+    updated_at: string;
+}
+
+export interface IFollow {
+    id: number;
+    user_id: number;
+    followed_user_id: number;
+    created_at: string;
+    updated_at: string;
+
+    user?: IUser;
+    followed?: IUser;
 }

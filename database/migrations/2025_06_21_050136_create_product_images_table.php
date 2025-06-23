@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('product_images', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')->references('id')->on('products')->onDelete('cascade');
+            $table->foreignId('product_id')->references('id')->on('products')->onDeleteCascade();
             $table->string('image');
             $table->string('alt_text')->nullable();
             $table->integer('order')->default(0);

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
+use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
@@ -62,5 +63,25 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         //
+    }
+
+    public function search(Request $request) {
+        try {
+            $query = $request->input('q');
+            if (!$query) {
+                return response()->json();
+            }
+
+            $categories = Category::where('name', 'like', '%' . $query . '%')
+                ->orderBy('name')
+                ->limit(10)
+                ->get();
+
+            return response()->json([
+                'data' => $categories
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([], 500);
+        }
     }
 }

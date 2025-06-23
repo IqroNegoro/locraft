@@ -2,7 +2,7 @@
     <div class="flex flex-col items-center justify-center w-full gap-16 bg-gray-50">
         <div class="flex flex-col items-center gap-8">
             <div class="text-xs text-gray-500">
-                Product of the week · <span class="underline cursor-pointer hover:text-primary"></span> {{ top_products[0] }} Total Likes
+                <!-- Product of the week · <span class="underline cursor-pointer hover:text-primary"></span> {{ top_products[0] }} Total Likes -->
             </div>
             <div class="flex flex-col-reverse md:flex-row justify-between gap-4 w-full">
                 <div class="flex flex-col justify-center">
@@ -208,50 +208,7 @@
                 </button>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 grid-row-1">
-                <div class="bg-white rounded-2xl shadow p-0 overflow-hidden max-w-xs w-full">
-                    <div class="relative">
-                        <img
-                            src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80"
-                            alt="Eco-Friendly Tote Bag"
-                            class="w-full h-56 object-cover"
-                        />
-                        <span class="absolute top-2 left-2 bg-black/80 text-white text-xs px-2 py-1 rounded-full flex items-center gap-1">
-                            <svg class="w-3 h-3 mr-1 inline" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/>
-                                <path d="M12 6v6l4 2" stroke="currentColor" stroke-width="2" fill="none"/>
-                            </svg>
-                            2 hours ago
-                        </span>
-                        <span class="absolute top-2 right-2 bg-gray-200 text-gray-700 text-xs px-3 py-1 rounded-full shadow">
-                            Bags
-                        </span>
-                    </div>
-                    <div class="p-5">
-                        <h3 class="font-semibold text-lg text-gray-900 leading-tight mb-0.5">
-                            Eco-Friendly Tote Bag
-                        </h3>
-                        <p class="text-gray-500 text-sm mb-2">by Luna Martinez</p>
-                        <div class="flex gap-2 mb-3">
-                            <span class="bg-gray-100 text-primary text-xs px-2 py-1 rounded">Sustainable</span>
-                            <span class="bg-gray-100 text-primary text-xs px-2 py-1 rounded">Canvas</span>
-                        </div>
-                        <div class="flex items-center justify-between">
-                            <div class="flex gap-4 text-sm text-gray-700">
-                                <span class="flex items-center gap-1">
-                                    <span class="text-red-500">♥</span>
-                                    234
-                                </span>
-                                <span class="flex items-center gap-1">
-                                    <span>👁️</span>
-                                    890
-                                </span>
-                            </div>
-                            <button class="border border-gray-400 rounded px-4 py-1 text-sm font-semibold hover:bg-gray-100 transition">
-                                View
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                <Latest v-for="product in latest_products" :key="product.id" :product="product" />
             </div>
         </div>
     </div>
@@ -259,9 +216,10 @@
 <script setup lang="ts">
 import { IProduct } from '@/types';
 import { ref } from 'vue';
+import Latest from '@/components/Product/Latest.vue';
 
 defineProps<{
-    top_products: IProduct[]
+    latest_products: IProduct[]
 }>();
 
 const selectedCategory = ref();

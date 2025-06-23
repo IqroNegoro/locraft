@@ -13,14 +13,15 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreignId('user_id')->references('id')->on('users')->onDeleteCascade();
             $table->string('name');
             $table->string('slug');
-            $table->string('category');
+            $table->foreignId('category_id')->references('id')->on('categories')->onDeleteCascade();
             $table->string('sub');
             $table->text('story');
             $table->string('image');
             $table->integer('likes')->default(0);
+            $table->integer('total_likes')->nullable();
             $table->integer('views')->default(0);
             $table->string('link')->default(0);
             $table->timestamps();

@@ -30,7 +30,7 @@
             <div class="space-y-8">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-3"><span
-                            class="bg-gradient-to-r from-primary to-gray-800 text-white px-4 py-2 rounded-full text-sm font-medium">Footwear</span>
+                            class="bg-gradient-to-r from-primary to-gray-800 text-white px-4 py-2 rounded-full text-sm font-medium">{{ product.category.name }}</span>
                         <div class="flex items-center gap-1 text-amber-500">
                             <i class="bx bx-award text-lg"></i>
                             <span class="text-sm font-medium text-gray-700">Featured</span>
@@ -289,6 +289,10 @@ const props = defineProps<{
     product: {
         id: number
         name: string
+        category: {
+            id: number,
+            name: string
+        },
         slug: string
         image: string
         likes: number

@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('likes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreignId('product_id')->references('id')->on('products')->onDelete('cascade');
+            $table->foreignId('user_id')->references('id')->on('users')->onDeleteCascade();
+            $table->foreignId('product_id')->references('id')->on('products')->onDeleteCascade();
             $table->unique(['user_id', 'product_id']);
             $table->timestamps();
         });

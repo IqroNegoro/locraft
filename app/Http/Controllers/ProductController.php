@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use App\Models\Category;
 use App\Models\Like;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -28,7 +29,9 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return Inertia::render('upload');
+        return Inertia::render('upload', [
+            'categories' => Category::latest()->take(20)->get()
+        ]);
     }
 
     /**
@@ -54,10 +57,10 @@ class ProductController extends Controller
             $product = DB::transaction(function() use ($validated, $images, $thumbnail) {
                 $product = Product::create([
                     'user_id' => Auth::id(),
-                    'slug' => Str::slug($validated['name']) . rand(1000, 9999),
+                    'slug' => Str::slug($validated['name']) . '-' . Str::random(4) . rand(1000, 9999),
                     'name' => $validated['name'],
                     'sub' => $validated['sub'],
-                    'category' => $validated['category'],
+                    'category_id' => $validated['category_id'],
                     'story' => $validated['story'],
                     'image' => $thumbnail,
                 ]);
@@ -73,6 +76,7 @@ class ProductController extends Controller
 
             return redirect()->route('products.show', $product->slug)->with('success', 'Your product successfully submitted');
         } catch (\Throwable $e) {
+            return $e;
             if (!empty($images)) {
                 foreach ($images as $image) {
                     if (Storage::disk('public')->exists('images/products/' . $image)) {
@@ -92,6 +96,7 @@ class ProductController extends Controller
         return Inertia::render('product', [
             'product' => $product->load([
                 'images', 
+                'category',
                 'user' => function($query) {
                     return $query->withExists('followers');
                 }, 
