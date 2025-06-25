@@ -68,14 +68,14 @@ class CategoryController extends Controller
     public function search(Request $request) {
         try {
             $query = $request->input('q');
-            if (!$query) {
-                return response()->json();
-            }
 
-            $categories = Category::where('name', 'like', '%' . $query . '%')
-                ->orderBy('name')
-                ->limit(10)
-                ->get();
+            $categories = Category::when($query, function($query) {
+                return $query->where('name', 'like', '%' . $query . '%');
+            })->when($request->has('c'), function($query) {
+                return $query->withCount('products');
+            })->orderBy('name')
+            ->limit(10)
+            ->get();
 
             return response()->json([
                 'data' => $categories

@@ -34,13 +34,13 @@ Route::get('home', function () {
 Route::get('setting', [UserController::class, 'edit'])->name('user.setting');
 Route::put('setting', [UserController::class, 'update'])->name('user.update');
 
-Route::get('/products/{product:slug}', [ProductController::class, 'show'])->name('products.show');
+Route::get('products/search', [ProductController::class, 'search'])->name('products.search');
+Route::get('products/{product:slug}', [ProductController::class, 'show'])->name('products.show');
+Route::put('products/{product:slug}/like', [ProductController::class, 'like'])->name('products.like');
+Route::post('products/{product:slug}/review', [ReviewController::class, 'store'])->name('products.review');
 
-Route::put('/products/{product:slug}/like', [ProductController::class, 'like'])->name('products.like');
-Route::post('/products/{product:slug}/review', [ReviewController::class, 'store'])->name('products.review');
-
-Route::get('/creators/{user:username}', [UserController::class, 'show'])->name('creators');
-Route::put('/creators/{user:username}/follow', [UserController::class, 'follow'])->name('creators.follow');
+Route::get('creators/{user:username}', [UserController::class, 'show'])->name('creators');
+Route::put('creators/{user:username}/follow', [UserController::class, 'follow'])->name('creators.follow');
 
 Route::get('upload', [ProductController::class, 'create'])->name('products.create');
 Route::post('upload', [ProductController::class, 'store'])->name('products.store');

@@ -3,34 +3,11 @@
         <nav class="w-full flex items-center justify-between px-6 py-2 border-b border-secondary bg-white">
             <div class="flex items-center gap-8">
                 <Link :href="route('home')" class="font-bold text-xl text-primary font-playfair">Lokafest</Link>
-                <!-- <ul class="flex items-center gap-4 text-primary text-sm">
-                    <li>
-                        <a href="#" class="hover:underline">Explore</a>
-                    </li>
-                    <li>
-                        <a href="#" class="hover:underline">Directory</a>
-                    </li>
-                    <li>
-                        <a href="#" class="hover:underline flex items-center gap-1">
-                            Academy
-                            <span class="bg-secondary text-[10px] px-1.5 py-0.5 rounded ml-1">NEW</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="hover:underline">Jobs</a>
-                    </li>
-                    <li>
-                        <a href="#" class="hover:underline">Market</a>
-                    </li>
-                </ul> -->
             </div>
             <div class="flex items-center gap-3">
-                <div
-                    class="max-md:hidden flex items-center bg-gray-100 rounded-full px-3 py-2 border border-gray-200 focus-within:ring focus-within:ring-primary">
+                <button @click="showSearch = true" class="flex items-center justify-center">
                     <i class="bx bx-search text-gray-500 text-lg"></i>
-                    <input type="text" placeholder="Search products"
-                        class="bg-transparent outline-none border-none ml-2 text-sm text-primary placeholder-gray-400" />
-                </div>
+                </button>
                 <Link :href="route('products.create')"
                     class="border border-gray-200 text-primary text-sm px-3 py-1 rounded hover:bg-secondary transition">
                 Submit Product</Link>
@@ -83,6 +60,8 @@
                 </Link>
             </div>
         </nav>
+
+        <Search v-if="showSearch" />
 
         <div class="px-4 md:px-24 py-6">
             <slot />
@@ -187,10 +166,12 @@
 </template>
 <script setup lang="ts">
 import Avatar from '@/components/Avatar.vue';
+import Search from '@/components/Search.vue';
 import { Link, router, usePage } from '@inertiajs/vue3';
 import { ref, watch } from 'vue';
 
 const showDropdown = ref<boolean>(false);
+const showSearch = ref<boolean>(false);
 
 watch(() => usePage().url, () => showDropdown.value = false);
 </script>

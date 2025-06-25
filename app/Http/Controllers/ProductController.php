@@ -156,4 +156,23 @@ class ProductController extends Controller
             return back()->with('error', 'Failed to like product, try again');
         }
     }
+
+    public function search(Request $request) {
+        try {
+            $query = $request->input('q');
+
+            $products = Product::when($query, function($query) {
+                return $query->where('name', 'like', '%' . $query . '%');
+            })
+            ->orderBy('likes', 'desc')
+            ->limit(10)
+            ->get();
+
+            return response()->json([
+                'data' => $products
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([], 500);
+        }
+    }
 }
