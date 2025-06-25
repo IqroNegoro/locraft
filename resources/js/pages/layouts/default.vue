@@ -34,10 +34,10 @@
                 <Link :href="route('products.create')"
                     class="border border-gray-200 text-primary text-sm px-3 py-1 rounded hover:bg-secondary transition">
                 Submit Product</Link>
-                <div>
-                    <i class="bx bx-bell text-2xl"></i>
-                </div>
                 <div v-if="$page.props.auth.user" class="flex gap-4 items-center relative group">
+                    <div>
+                        <i class="bx bx-bell text-2xl"></i>
+                    </div>
                     <button
                         class="flex items-center focus:outline-none"
                         @click="showDropdown = !showDropdown"
@@ -60,7 +60,7 @@
                                 <i class="bx bx-user text-lg"></i>
                                 Profile
                             </Link>
-                            <Link :href="route('setting')"
+                            <Link :href="route('user.setting')"
                                 class="flex items-center gap-2 px-4 py-2 text-sm text-primary hover:bg-gray-50 w-full justify-start"
                             >
                                 <i class="bx bx-cog text-lg"></i>
@@ -84,7 +84,7 @@
             </div>
         </nav>
 
-        <div class="px-4 md:px-8 py-6">
+        <div class="px-4 md:px-24 py-6">
             <slot />
         </div>
 

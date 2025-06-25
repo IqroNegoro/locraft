@@ -12,7 +12,8 @@
                         <div class="flex flex-col md:flex-row md:items-start md:justify-between mb-6">
                             <div>
                                 <h1 class="text-3xl font-playfair font-bold text-primary mb-2">{{ user.name }}</h1>
-                                <p class="text-xl text-gray-600 mb-4">@{{ user.username }}</p>
+                                <p class="text-sm text-gray-600 mb-4">@{{ user.username }}</p>
+                                <span class="text-gray-700 my-4 leading-relaxed">{{ user.bio }}</span>
                             </div>
                             <div v-if="$page.props.auth.user.id !== user.id" class="flex gap-3">
                                 <button @click="router.put(route('creators.follow', user.username), {}, {
@@ -25,7 +26,6 @@
                                     class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 border bg-background h-10 px-4 py-2 border-primary text-primary hover:bg-primary hover:text-white">Message</button>
                             </div>
                         </div>
-                        <span class="text-gray-700 my-4 leading-relaxed">{{ user.bio }}</span>
                         <div class="flex gap-8 mb-6">
                             <div class="text-center">
                                 <div class="font-bold text-2xl text-primary">{{ user.products }}</div>
@@ -52,42 +52,42 @@
                         </div>
                         <div class="flex flex-wrap gap-4">
                             <a href="https://instagram.com/sarahcreates_" target="_blank" rel="noopener noreferrer"
-                                class="flex items-center gap-2 text-primary hover:text-gray-800 transition-colors">
+                                class="flex items-center gap-2 bg-gray-200 py-2 px-4 rounded-full text-primary hover:text-gray-800 transition-colors">
                                 <i class='bx bxl-instagram text-lg'></i>
                                 <span class="text-sm font-medium">@sarahcreates_</span>
                             </a>
                             <a href="https://twitter.com/sarahcreates_" target="_blank" rel="noopener noreferrer"
-                                class="flex items-center gap-2 text-primary hover:text-gray-800 transition-colors">
+                                class="flex items-center gap-2 bg-gray-200 py-2 px-4 rounded-full text-primary hover:text-gray-800 transition-colors">
                                 <i class='bx bxl-twitter text-lg'></i>
                                 <span class="text-sm font-medium">@sarahcreates_</span>
                             </a>
                             <a href="https://facebook.com/sarahcreates" target="_blank" rel="noopener noreferrer"
-                                class="flex items-center gap-2 text-primary hover:text-gray-800 transition-colors">
+                                class="flex items-center gap-2 bg-gray-200 py-2 px-4 rounded-full text-primary hover:text-gray-800 transition-colors">
                                 <i class='bx bxl-facebook text-lg'></i>
                                 <span class="text-sm font-medium">Sarah Creates</span>
                             </a>
                             <a href="https://pinterest.com/sarahcreates" target="_blank" rel="noopener noreferrer"
-                                class="flex items-center gap-2 text-primary hover:text-gray-800 transition-colors">
+                                class="flex items-center gap-2 bg-gray-200 py-2 px-4 rounded-full text-primary hover:text-gray-800 transition-colors">
                                 <i class='bx bxl-pinterest text-lg'></i>
                                 <span class="text-sm font-medium">SarahCreates</span>
                             </a>
                             <a href="mailto:sarahcreates@email.com" target="_blank" rel="noopener noreferrer"
-                                class="flex items-center gap-2 text-primary hover:text-gray-800 transition-colors">
+                                class="flex items-center gap-2 bg-gray-200 py-2 px-4 rounded-full text-primary hover:text-gray-800 transition-colors">
                                 <i class='bx bx-envelope text-lg'></i>
                                 <span class="text-sm font-medium">Email</span>
                             </a>
                             <a href="https://sarahcreates.com" target="_blank" rel="noopener noreferrer"
-                                class="flex items-center gap-2 text-primary hover:text-gray-800 transition-colors">
+                                class="flex items-center gap-2 bg-gray-200 py-2 px-4 rounded-full text-primary hover:text-gray-800 transition-colors">
                                 <i class='bx bx-globe text-lg'></i>
                                 <span class="text-sm font-medium">sarahcreates.com</span>
                             </a>
                             <a href="https://sarahcreates.com" target="_blank" rel="noopener noreferrer"
-                                class="flex items-center gap-2 text-primary hover:text-gray-800 transition-colors">
+                                class="flex items-center gap-2 bg-gray-200 py-2 px-4 rounded-full text-primary hover:text-gray-800 transition-colors">
                                 <i class='bx bx-link-external text-lg'></i>
                                 <span class="text-sm font-medium">External Link</span>
                             </a>
                             <a href="https://youtube.com/@SarahCreatesChannel" target="_blank" rel="noopener noreferrer"
-                                class="flex items-center gap-2 text-primary hover:text-gray-800 transition-colors">
+                                class="flex items-center gap-2 bg-gray-200 py-2 px-4 rounded-full text-primary hover:text-gray-800 transition-colors">
                                 <i class='bx bxl-youtube text-lg'></i>
                                 <span class="text-sm font-medium">SarahCreatesChannel</span>
                             </a>

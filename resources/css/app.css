@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
 
 @import 'tailwindcss';
+@plugin '@tailwindcss/typography';
 
 @import 'tw-animate-css';
 
@@ -57,5 +58,15 @@
 
     ::-webkit-scrollbar-track {
         @apply bg-transparent;
+    }
+}
+
+@layer components {
+    /* div#story, div#story > * {
+        all: initial;
+    } */
+
+    div#story br {
+        @apply !hidden;
     }
 }

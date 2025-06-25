@@ -5,9 +5,9 @@
                 <i class="bx bx-x"></i>
             </button>
             <div class="flex flex-col relative h-full md:max-h-full md:h-max md:flex-row w-full max-md:overflow-y-scroll">
-                <div class="md:w-1/2 max-md:h-max border h-full relative bg-gray-100">
+                <div class="md:w-1/2 max-md:h-max h-full relative bg-gray-100">
                     <img :src="product.images?.[imageIndex]?.image" :alt="product.images?.[imageIndex]?.alt_text || ''"
-                        class="w-full " />
+                        class="w-full" />
                     <button v-if="product.images?.length && imageIndex != 0" @click="imageIndex--"
                         class="absolute top-1/2 -translate-y-1/2 left-2 p-2 flex justify-center items-center bg-white/75 rounded-full"
                         aria-label="Sebelumnya">

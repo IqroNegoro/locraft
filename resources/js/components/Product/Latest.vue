@@ -1,10 +1,10 @@
 <template>
-    <div class="bg-white rounded-2xl shadow p-0 overflow-hidden max-w-xs w-full">
+    <div class="bg-white rounded-2xl h-max shadow p-0 overflow-hidden max-w-xs w-full">
         <div class="relative">
             <img
                 :src="product.image"
                 :alt="product.name"
-                class="w-full h-56 object-cover"
+                class="w-full h-56 aspect-square object-cover"
             />
             <span class="absolute top-2 left-2 bg-black/80 text-white text-xs px-2 py-1 rounded-full flex items-center gap-1">
                 <svg class="w-3 h-3 mr-1 inline" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">

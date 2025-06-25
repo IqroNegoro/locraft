@@ -5,7 +5,7 @@
             <p class="text-lg text-muted-foreground">Upload your product and tell its story</p>
         </div>
         <div class="rounded-lg border border-gray-200 shadow-sm w-full max-w-xl p-6">
-            <form class="flex flex-col gap-6" @submit.prevent="router.post(route('products.store'), {
+            <form class="flex flex-col gap-6" @submit.prevent="form.post(route('products.store'), {
                 name: form.name,
                 sub: form.sub,
                 story: form.story,
@@ -32,7 +32,7 @@
                         class="flex h-10 w-full rounded-md border border-gray-200 bg-background px-3 py-2 text-base file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
                         id="category_id" placeholder="e.g., Leather Goods, Pottery, Jewelry" required>
                     <button v-else type="button" @click="form.category_id = null" class="w-max flex flex-col items-start">
-                        {{ availableCategories.find(v => v.id === form.category_id)!.name }}
+                        {{ availableCategories.find(v => v.id === form.category_id || v.name.includes(category))?.name }}
                         <span class="text-xs text-gray-500">Click to change category</span>
                     </button>
                     <div v-if="!form.category_id"
@@ -71,8 +71,7 @@
                     <div class="flex items-center gap-2">
                         <label class="text-sm font-medium leading-none" for="description">Description (Markdown)</label>
                     </div>
-                    <textarea v-model="form.story" class="border rounded-lg p-2 border-gray-200" name=""
-                        id="story"></textarea>
+                    <Quill v-model.trim="form.story" />
                     <span v-if="form.errors?.story" class="text-xs text-red-500">{{ form.errors.story }}</span>
                 </div>
                 <button
@@ -89,6 +88,7 @@
 import { router, useForm } from '@inertiajs/vue3'
 import { render } from '@/lib/utils';
 import { ref, watch } from 'vue';
+import Quill from '@/components/Quill.vue';
 
 const props = defineProps<{
     categories: {
@@ -154,10 +154,12 @@ watch(category, v => {
         availableCategories.value = props.categories;
     } else {
         timeout.value = setTimeout(async () => {
+            if (form.category_id) return;
             const response = await fetch(route('categories.search', {q: v}));
-        
+            
             const data = await response.json();
-        
+            
+            if (form.category_id) return;
             availableCategories.value = data.data
         }, 500)
     }

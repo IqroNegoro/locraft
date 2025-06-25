@@ -24,14 +24,15 @@ Route::middleware('guest')->group(function() {
 });
 
 Route::get('home', function () {
+    $product = Product::with('user', 'category');
     return Inertia::render('home', [
-        'latest_products' => Product::with('user', 'category')->latest()->take(20)->get()
+        'latest_products' => $product->latest()->take(20)->get(),
+        'random_products' => $product->inRandomOrder()->get()
     ]);
 })->name('home');
 
-Route::get('setting', function () {
-    return Inertia::render('user/edit');
-})->name('setting');
+Route::get('setting', [UserController::class, 'edit'])->name('user.setting');
+Route::put('setting', [UserController::class, 'update'])->name('user.update');
 
 Route::get('/products/{product:slug}', [ProductController::class, 'show'])->name('products.show');
 

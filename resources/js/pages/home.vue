@@ -157,43 +157,7 @@
                     </div>
                 </div>
                 <div class="w-full grid grid-cols-1 md:grid-cols-3 grid-flow-row gap-4">
-                    <div v-for="i in 15" :key="i" class="bg-white rounded-xl shadow p-4 max-w-xs w-full">
-                        <div class="relative">
-                            <img
-                                src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80"
-                                alt="Artisan Ceramic Jewelry"
-                                class="rounded-lg object-cover w-full h-44"
-                            />
-                            <span class="absolute top-2 right-2 bg-gray-800 text-white text-xs px-3 py-1 rounded-full shadow">
-                                Jewelry
-                            </span>
-                        </div>
-                        <div class="mt-4">
-                            <h3 class="font-semibold text-lg text-gray-900 leading-tight">
-                                Artisan Ceramic Jewelry
-                            </h3>
-                            <p class="text-gray-500 text-sm mb-2">by Alex Kim</p>
-                            <div class="flex gap-2 mb-3">
-                                <span class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded">Handmade</span>
-                                <span class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded">Ceramic</span>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <div class="flex gap-4 text-sm text-gray-700">
-                                    <span class="flex items-center gap-1">
-                                        <span class="text-red-500">♥</span>
-                                        1,687
-                                    </span>
-                                    <span class="flex items-center gap-1">
-                                        <span>👁️</span>
-                                        5,420
-                                    </span>
-                                </div>
-                                <button class="border border-gray-400 rounded px-4 py-1 text-sm font-semibold hover:bg-gray-100 transition">
-                                    View
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+                    <Latest v-for="product in random_products" :key="product.id" :product="product" />
                 </div>
             </div>
         </div>
@@ -220,6 +184,7 @@ import Latest from '@/components/Product/Latest.vue';
 
 defineProps<{
     latest_products: IProduct[]
+    random_products: IProduct[]
 }>();
 
 const selectedCategory = ref();

@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\Follow;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class UserController extends Controller
@@ -106,17 +108,41 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $user)
+    public function edit()
     {
-        //
+        return Inertia::render('user/edit');
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update(UpdateUserRequest $request)
     {
-        //
+        $avatar = "";
+        try {
+            $data = $request->validated();
+
+            $user = Auth::user();
+
+            if ($request->hasFile('avatar')) {
+                $path = $request->file('avatar')->store('images/avatar', 'public');
+                $data['avatar'] = basename($path);
+                $avatar = basename($path);
+            }
+            
+            $user->update($data);
+            
+            if ($request->hasFile('avatar') && $user->avatar && Storage::disk('public')->exists('images/avatar/' . $user->avatar)) {
+                Storage::disk('public')->delete('images/avatar/' . $user->avatar);
+            }
+
+            return redirect()->back()->with('success', 'Your profile has been updated');
+        } catch (\Throwable $e) {
+            if ($avatar && Storage::disk('public')->exists('images/products/' . $avatar)) {
+                Storage::disk('public')->delete('images/products/' . $avatar);
+            }
+            return redirect()->back()->with('error', 'Failed to update profile, try again');
+        }
     }
 
     /**
