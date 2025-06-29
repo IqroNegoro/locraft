@@ -6,15 +6,15 @@
                     <img :src="product.images?.[imageIndex].image" alt="Product"
                         class="w-full h-full object-contain transition-transform duration-300 group-hover:scale-105">
                     <!-- <button
-                        class="flex justify-center items-center absolute top-4 right-4 bg-white/90 hover:bg-white rounded-full p-3 transition-all duration-200 shadow-lg opacity-0 group-hover:opacity-100">
+                        class="flex justify-center items-center absolute top-4 right-4 bg-soft-white/90 hover:bg-soft-white rounded-full p-3 transition-all duration-200 shadow-lg opacity-0 group-hover:opacity-100">
                             <i class="bx bx-fullscreen text-xl text-gray-700"></i>
                         </button> -->
                     <button v-if="product.images?.length && imageIndex != 0" @click="imageIndex--"
-                        class="flex justify-center items-center absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white rounded-full p-3 transition-all duration-200 shadow-lg opacity-0 group-hover:opacity-100">
+                        class="flex justify-center items-center absolute left-4 top-1/2 -translate-y-1/2 bg-soft-white/90 hover:bg-soft-white rounded-full p-3 transition-all duration-200 shadow-lg opacity-0 group-hover:opacity-100">
                         <i class="bx bx-chevron-left text-xl text-gray-700"></i>
                     </button>
                     <button v-if="product.images && imageIndex < product.images.length - 1" @click="imageIndex++"
-                        class="flex justify-center items-center absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white rounded-full p-3 transition-all duration-200 shadow-lg opacity-0 group-hover:opacity-100">
+                        class="flex justify-center items-center absolute right-4 top-1/2 -translate-y-1/2 bg-soft-white/90 hover:bg-soft-white rounded-full p-3 transition-all duration-200 shadow-lg opacity-0 group-hover:opacity-100">
                         <i class="bx bx-chevron-right text-xl text-gray-700"></i>
                     </button>
                     <div
@@ -30,7 +30,8 @@
             <div class="space-y-8">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-3"><span
-                            class="bg-gradient-to-r from-primary to-gray-800 text-white px-4 py-2 rounded-full text-sm font-medium">{{ product.category.name }}</span>
+                            class="bg-gradient-to-r from-primary to-gray-800 text-white px-4 py-2 rounded-full text-sm font-medium">{{
+                            product.category.name }}</span>
                         <div class="flex items-center gap-1 text-amber-500">
                             <i class="bx bx-award text-lg"></i>
                             <span class="text-sm font-medium text-gray-700">Featured</span>
@@ -93,9 +94,10 @@
         <div class="w-full flex flex-col md:grid grid-cols-[2fr_1fr] grid-flow-row justify-center gap-12">
             <div class="flex flex-col gap-12">
                 <h2 class="text-2xl font-playfair font-bold text-primary mb-6">Product Story</h2>
-                <div class="!w-full !max-w-none prose-h1:font-playfair prose-h2:font-playfair border border-gray-200 bg-white rounded-lg p-8 prose-gray prose prose-sm" id="story" v-html="product.story"></div>
+                <div class="!w-full !max-w-none prose-h1:font-playfair prose-h2:font-playfair border border-gray-200 bg-soft-white rounded-lg p-8 prose-gray prose prose-sm"
+                    id="story" v-html="product.story"></div>
                 <div class="flex flex-col gap-10">
-                    <div class="bg-white border border-gray-200 rounded-2xl p-8 shadow-lg">
+                    <div class="bg-soft-white border border-gray-200 rounded-2xl p-8 shadow-lg">
                         <h3 class="text-2xl font-playfair font-bold text-primary mb-6">Reviews &amp; Ratings</h3>
                         <div class="flex items-center gap-8 mb-8">
                             <div class="text-center">
@@ -145,16 +147,18 @@
                             </div>
                             <div class="w-full flex flex-col">
                                 <label class="block text-sm font-semibold text-primary mb-3">Your Review</label>
-                                <div ref="reviewInput" class="max-w-full whitespace-pre-line min-h-24 py-1 inline-block border border-gray-200 focus:border-primary rounded-xl p-3" contenteditable :class="{
-                                    'border border-red-500': form.review!.length > 5000 || form.errors?.review
-                                }" placeholder="Tell us about your feelings or experience with this product..."
+                                <div ref="reviewInput"
+                                    class="max-w-full whitespace-pre-line min-h-24 py-1 inline-block border border-gray-200 focus:border-primary rounded-xl p-3"
+                                    contenteditable :class="{
+                                        'border border-red-500': form.review!.length > 5000 || form.errors?.review
+                                    }" placeholder="Tell us about your feelings or experience with this product..."
                                     @input="e => form.review = (e.target as HTMLDivElement).innerText"></div>
                                 <span v-if="form.errors?.review" class="text-xs text-red-500 mt-1 block">
                                     {{ form.errors.review }}
                                 </span>
                                 <span v-if="form.review && form.review.length > 5000"
                                     class="text-xs text-red-500 mt-1 block">
-                                    Review terlalu panjang, maksimal 5000 karakter ya, onii-chan!
+                                    Review terlalu panjang
                                 </span>
                             </div>
                             <button type="submit"
@@ -175,7 +179,7 @@
                     <div class="flex flex-col gap-6 items-center">
                         <template v-if="reviews.length">
                             <div v-for="review in reviews" :key="review.id"
-                                class="w-full bg-white border border-gray-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow duration-200">
+                                class="w-full bg-soft-white border border-gray-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow duration-200">
                                 <div class="flex items-start gap-5">
                                     <img :src="review.user.avatar" :alt="review.user.name"
                                         class="w-14 h-14 rounded-xl object-cover shadow-md">
@@ -200,7 +204,7 @@
                     </div>
                 </div>
             </div>
-            <div class="bg-white border border-gray-200 rounded-2xl p-8 h-fit sticky top-8 shadow-lg">
+            <div class="bg-soft-white border border-gray-200 rounded-2xl p-8 h-fit sticky top-8 shadow-lg">
                 <div class="flex items-center gap-2 mb-8">
                     <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
                     <h3 class="text-xl font-playfair font-bold text-primary">Creator Profile</h3>

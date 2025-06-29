@@ -163,6 +163,8 @@ class ProductController extends Controller
 
             $products = Product::when($query, function($query) {
                 return $query->where('name', 'like', '%' . $query . '%');
+            }, function($query) {
+                return $query->whereToday('created_at');
             })
             ->orderBy('likes', 'desc')
             ->limit(10)

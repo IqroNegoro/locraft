@@ -6,6 +6,7 @@ import type { DefineComponent } from 'vue';
 import { createApp, h } from 'vue';
 import { ZiggyVue } from 'ziggy-js';
 import DefaultLayout from './pages/layouts/default.vue';
+import AdminLayout from './pages/layouts/admin.vue';
 // import { initializeTheme } from './composables/useAppearance';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
@@ -15,7 +16,7 @@ createInertiaApp({
     resolve: (name) => {
         const page = import.meta.glob<DefineComponent>('./pages/**/*.vue', { eager: true });
         const pageComponent = page[`./pages/${name}.vue`];
-        pageComponent.default.layout = name === 'index' || name === 'register' || name === 'login' ? false : pageComponent.default.layout || DefaultLayout;
+        pageComponent.default.layout = name === 'index' || name === 'register' || name === 'login' ? false : name.startsWith('admin') ? pageComponent.default.layout || AdminLayout : pageComponent.default.layout || DefaultLayout;
         return pageComponent;
     },
     setup({ el, App, props, plugin }) {

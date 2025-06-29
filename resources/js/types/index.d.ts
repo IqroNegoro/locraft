@@ -146,3 +146,17 @@ export interface IFollow {
     user?: IUser;
     followed?: IUser;
 }
+
+export interface IReport {
+    id: number;
+    user_id: number;
+    product_id: number;
+    reason: string;
+    created_at: string;
+    updated_at: string;
+
+    user?: IUser;
+    product?: IProduct;
+
+    createdAt?: string;
+}

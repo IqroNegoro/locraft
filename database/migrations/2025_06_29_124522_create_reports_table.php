@@ -11,13 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('notifications', function (Blueprint $table) {
+        Schema::create('reports', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->references('id')->on('users')->onDeleteCascade();
-            $table->foreignId('product_id')->nullable()->references('id')->on('products')->nullOnDelete();
-            $table->enum('type', ['like', 'review', 'follow', 'report', 'another']);
-            $table->string('content');
-            $table->boolean('is_read')->default(false);
+            $table->foreignId('product_id')->references('id')->on('products')->onDeleteCascade();
+            $table->text('reason');
             $table->timestamps();
         });
     }
@@ -27,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('notifications');
+        Schema::dropIfExists('reports');
     }
 };

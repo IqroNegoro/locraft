@@ -28,17 +28,20 @@
                 </div>
                 <div class="flex flex-col group gap-2 relative">
                     <label class="text-sm font-medium leading-none" for="category_id">Category</label>
-                    <input v-if="!form.category_id" v-model="category"  autocomplete="off"
+                    <input v-if="!form.category_id" v-model="category" autocomplete="off"
                         class="flex h-10 w-full rounded-md border border-gray-200 bg-background px-3 py-2 text-base file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
                         id="category_id" placeholder="e.g., Leather Goods, Pottery, Jewelry" required>
-                    <button v-else type="button" @click="form.category_id = null" class="w-max flex flex-col items-start">
-                        {{ availableCategories.find(v => v.id === form.category_id || v.name.includes(category))?.name }}
+                    <button v-else type="button" @click="form.category_id = null"
+                        class="w-max flex flex-col items-start">
+                        {{availableCategories.find(v => v.id === form.category_id || v.name.includes(category))?.name
+                        }}
                         <span class="text-xs text-gray-500">Click to change category</span>
                     </button>
                     <div v-if="!form.category_id"
-                        class="absolute top-full hidden group-focus-within:flex left-0 w-full max-h-96 overflow-y-auto flex-col bg-white rounded-lg shadow border border-gray-200 z-50">
+                        class="absolute top-full hidden group-focus-within:flex left-0 w-full max-h-96 overflow-y-auto flex-col bg-soft-white rounded-lg shadow border border-gray-200 z-50">
                         <template v-if="availableCategories.length">
-                            <button v-for="category in availableCategories" :key="category.id" @click="form.category_id = category.id" type="button"
+                            <button v-for="category in availableCategories" :key="category.id"
+                                @click="form.category_id = category.id" type="button"
                                 class="flex items-center gap-2 w-full text-left px-4 py-2 text-sm hover:bg-gray-100">
                                 {{ category.name }}
                             </button>
@@ -46,7 +49,7 @@
                         <span v-else class="p-2 text-sm">There is no categories</span>
                     </div>
                     <span v-if="form.errors?.category_id" class="text-xs text-red-500">{{ form.errors.category_id
-                        }}</span>
+                    }}</span>
                 </div>
                 <div class="flex flex-col gap-1">
                     <label class="text-sm font-medium leading-none" for="pictures">Pictures</label>
@@ -155,10 +158,12 @@ watch(category, v => {
     } else {
         timeout.value = setTimeout(async () => {
             if (form.category_id) return;
-            const response = await fetch(route('categories.search', {q: v}));
-            
+            const response = await fetch(route('api.categories.search', { q: v }));
+
+            if (!response.ok) return;
+
             const data = await response.json();
-            
+
             if (form.category_id) return;
             availableCategories.value = data.data
         }, 500)

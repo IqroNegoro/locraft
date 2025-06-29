@@ -1,15 +1,12 @@
 <template>
-    <div class="bg-white rounded-2xl h-max shadow p-0 overflow-hidden max-w-xs w-full">
+    <div class="bg-soft-white rounded-2xl h-max shadow p-0 overflow-hidden max-w-xs w-full">
         <div class="relative">
-            <img
-                :src="product.image"
-                :alt="product.name"
-                class="w-full h-56 aspect-square object-cover"
-            />
-            <span class="absolute top-2 left-2 bg-black/80 text-white text-xs px-2 py-1 rounded-full flex items-center gap-1">
+            <img :src="product.image" :alt="product.name" class="w-full h-56 aspect-square object-cover" />
+            <span
+                class="absolute top-2 left-2 bg-black/80 text-white text-xs px-2 py-1 rounded-full flex items-center gap-1">
                 <svg class="w-3 h-3 mr-1 inline" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/>
-                    <path d="M12 6v6l4 2" stroke="currentColor" stroke-width="2" fill="none"/>
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none" />
+                    <path d="M12 6v6l4 2" stroke="currentColor" stroke-width="2" fill="none" />
                 </svg>
                 {{ product.created_at }}
             </span>
@@ -21,7 +18,8 @@
             <h3 class="font-semibold text-lg text-gray-900 leading-tight mb-0.5 font-playfair">
                 {{ product.name }}
             </h3>
-            <Link :href="route('creators', product?.user?.username)" class="text-gray-500 text-sm mb-2">by {{ product?.user?.name }}</Link>
+            <Link :href="route('creators', product?.user?.username)" class="text-gray-500 text-sm mb-2">by {{
+                product?.user?.name }}</Link>
             <div class="flex items-center justify-between">
                 <div class="flex gap-4 text-sm text-gray-700">
                     <div class="flex gap-1 items-center">
@@ -35,8 +33,9 @@
                         890
                     </span>
                 </div>
-                <Link :href="route('products.show', product.slug)" class="border border-gray-400 rounded px-4 py-1 text-sm font-semibold hover:bg-gray-100 transition">
-                    View
+                <Link :href="route('products.show', product.slug)"
+                    class="border border-gray-400 rounded px-4 py-1 text-sm font-semibold hover:bg-gray-100 transition">
+                View
                 </Link>
             </div>
         </div>

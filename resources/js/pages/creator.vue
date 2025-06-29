@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <div class="bg-white rounded-2xl shadow-lg p-8 mb-8">
+            <div class="bg-soft-white rounded-2xl shadow-lg p-8 mb-8">
                 <div class="flex flex-col md:flex-row gap-8">
                     <div class="flex-shrink-0">
                         <div class="relative">
@@ -15,7 +15,7 @@
                                 <p class="text-sm text-gray-600 mb-4">@{{ user.username }}</p>
                                 <span class="text-gray-700 my-4 leading-relaxed">{{ user.bio }}</span>
                             </div>
-                            <div v-if="$page.props.auth.user.id !== user.id" class="flex gap-3">
+                            <div v-if="$page.props.auth?.user?.id !== user.id" class="flex gap-3">
                                 <button @click="router.put(route('creators.follow', user.username), {}, {
                                     only: ['user']
                                 })"
@@ -120,7 +120,7 @@
                     </div>
                 </div>
                 <div v-if="product.images_count! > 1"
-                    class="absolute top-3 right-3 bg-white/90 rounded-full px-2 py-1 flex justify-center items-center">
+                    class="absolute top-3 right-3 bg-soft-white/90 rounded-full px-2 py-1 flex justify-center items-center">
                     <span class="text-xs font-medium text-gray-700">{{ product!.images_count }}</span>
                 </div>
                 <div class="absolute top-3 left-3 bg-primary text-white px-3 py-1 rounded-full text-xs font-medium">
@@ -133,8 +133,8 @@
         <ProductModal v-if="showModal && product" :product="product" :user="user" @close="showModal = false" />
 
         <!-- <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-            <div class="w-full h-full md:max-w-2xl md:max-h-3/4 md:h-max md:rounded-lg overflow-hidden bg-white relative max-md:flex flex-col">
-                <button @click="$emit('close')" class="absolute top-2 right-2 rounded-full bg-white/50 z-10">
+            <div class="w-full h-full md:max-w-2xl md:max-h-3/4 md:h-max md:rounded-lg overflow-hidden bg-soft-white relative max-md:flex flex-col">
+                <button @click="$emit('close')" class="absolute top-2 right-2 rounded-full bg-soft-white/50 z-10">
                     <i class="bx bx-x"></i>
                 </button>
                 <div class="flex flex-col relative h-full md:max-h-full md:h-max md:flex-row w-full max-md:overflow-y-scroll">
@@ -142,12 +142,12 @@
                         <img :src="product.images?.[imageIndex]?.image" :alt="product.images?.[imageIndex]?.alt_text || ''"
                             class="w-full " />
                         <button v-if="product.images?.length && imageIndex != 0" @click="imageIndex--"
-                            class="absolute top-1/2 -translate-y-1/2 left-2 p-2 flex justify-center items-center bg-white/75 rounded-full"
+                            class="absolute top-1/2 -translate-y-1/2 left-2 p-2 flex justify-center items-center bg-soft-white/75 rounded-full"
                             aria-label="Sebelumnya">
                             <i class="bx bx-chevron-left text-2xl"></i>
                         </button>
                         <button v-if="product.images && imageIndex < product.images.length - 1" @click="imageIndex++"
-                            class="absolute top-1/2 -translate-y-1/2 right-2 p-2 flex justify-center items-center bg-white/75 rounded-full"
+                            class="absolute top-1/2 -translate-y-1/2 right-2 p-2 flex justify-center items-center bg-soft-white/75 rounded-full"
                             aria-label="Selanjutnya">
                             <i class="bx bx-chevron-right text-2xl"></i>
                         </button>

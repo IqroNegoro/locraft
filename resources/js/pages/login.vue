@@ -1,6 +1,7 @@
 <template>
     <div class="flex justify-center items-center h-dvh bg-gray-50">
-        <div class="rounded-lg border border-gray-200 bg-card text-card-foreground shadow-sm w-full max-w-md bg-white">
+        <div
+            class="rounded-lg border border-gray-200 bg-card text-card-foreground shadow-sm w-full max-w-md bg-soft-white">
             <div class="flex flex-col gap-1.5 p-6 text-center">
                 <h3 class="font-semibold tracking-tight text-3xl font-playfair text-primary">Welcome Back</h3>
                 <p class="text-sm text-muted-foreground text-gray-500">Sign in to your Lokafest account</p>
@@ -30,9 +31,9 @@
                         </div>
                         <span v-if="form.errors.password" class="text-xs text-red-500">{{ form.errors.password }}</span>
                     </div>
-                    <span v-if="$page.props.error" class="text-xs text-red-500 text-center">{{ $page.props.error }}</span>
-                    <button
-                        :disabled="!form.email || !form.password || form.processing"
+                    <span v-if="$page.props.error" class="text-xs text-red-500 text-center">{{ $page.props.error
+                        }}</span>
+                    <button :disabled="!form.email || !form.password || form.processing"
                         class="inline-flex items-center text-white justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 size-4 shrink-0 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 w-full"
                         type="submit">Sign In</button>
                 </form>
@@ -47,7 +48,6 @@
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3'
 
-// Onii-chan~! Imouto kasih useForm biar kayak register yaa! Semangat login-nya! (≧◡≦) ♡
 const form = useForm({
     email: '',
     password: ''

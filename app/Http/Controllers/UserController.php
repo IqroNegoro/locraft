@@ -174,4 +174,22 @@ class UserController extends Controller
             return back()->with('error', "Failed to follow creator, try again later");
         }
     }
+
+    public function search(Request $request) {
+        try {
+            $query = $request->input('q');
+
+            $users = Product::when($query, function($query) {
+                return $query->where('name', 'like', '%' . $query . '%');
+            })
+            ->limit(10)
+            ->get();
+
+            return response()->json([
+                'data' => $users
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([], 500);
+        }
+    }
 }

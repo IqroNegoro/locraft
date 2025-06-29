@@ -1,6 +1,7 @@
 <template>
     <div class="flex justify-center items-center h-dvh bg-gray-50">
-        <div class="rounded-lg border border-gray-200 bg-card text-card-foreground shadow-sm w-full max-w-md bg-white">
+        <div
+            class="rounded-lg border border-gray-200 bg-card text-card-foreground shadow-sm w-full max-w-md bg-soft-white">
             <div class="flex flex-col gap-1.5 p-6 text-center">
                 <h3 class="font-semibold tracking-tight text-3xl font-playfair text-primary">Join Lokafest</h3>
                 <p class="text-sm text-muted-foreground text-gray-500">Create your account to start showcasing</p>
@@ -63,9 +64,11 @@
                                 class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 pointer-events-none size-4 shrink-0 hover:text-accent-foreground rounded-md absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
                                 type="button"><i class="bx bx-show text-xl"></i></button>
                         </div>
-                        <span v-if="form.errors.confirm_password" class="text-xs text-red-500">{{ form.errors.confirm_password }}</span>
+                        <span v-if="form.errors.confirm_password" class="text-xs text-red-500">{{
+                            form.errors.confirm_password }}</span>
                     </div>
-                    <span v-if="$page.props.error" class="text-xs text-red-500 text-center">{{ $page.props.error }}</span>
+                    <span v-if="$page.props.error" class="text-xs text-red-500 text-center">{{ $page.props.error
+                        }}</span>
                     <button
                         :disabled="!form.name || !form.username || !form.email || !form.password || !form.confirm_password || form.processing"
                         class="inline-flex items-center text-white justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 size-4 shrink-0 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 w-full"

@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class CategoryController extends Controller
 {
@@ -67,13 +68,12 @@ class CategoryController extends Controller
 
     public function search(Request $request) {
         try {
-            $query = $request->input('q');
+            $q = $request->input('q');
 
-            $categories = Category::when($query, function($query) {
-                return $query->where('name', 'like', '%' . $query . '%');
-            })->when($request->has('c'), function($query) {
-                return $query->withCount('products');
-            })->orderBy('name')
+            $categories = Category::when($q, function($query) use ($q) {
+                return $query->where('name', 'like', '%' . $q . '%');
+            })
+            ->orderBy('name')
             ->limit(10)
             ->get();
 
