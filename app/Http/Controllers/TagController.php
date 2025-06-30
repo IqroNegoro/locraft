@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Tag;
 use App\Http\Requests\StoreTagRequest;
 use App\Http\Requests\UpdateTagRequest;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Str;
 
@@ -87,6 +88,25 @@ class TagController extends Controller
             return back()->with('success', 'Tag deleted');
         } catch (\Throwable $e) {
             return back()->with('error', 'Failed to delete tag');
+        }
+    }
+
+    public function search(Request $request) {
+        try {
+            $q = $request->input('q');
+
+            $tags = Tag::when($q, function($query) use ($q) {
+                return $query->where('name', 'like', '%' . $q . '%');
+            })
+            ->orderBy('name')
+            ->limit(10)
+            ->get();
+
+            return response()->json([
+                'data' => $tags
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([], 500);
         }
     }
 }

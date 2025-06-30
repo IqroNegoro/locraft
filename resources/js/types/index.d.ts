@@ -93,6 +93,7 @@ export interface IProduct {
     likes_list?: ILike[];
     liked?: ILike | null;
     reviews?: IReview[];
+    tags: ITag[];
 
     image_url?: string;
     liked_exists?: boolean;

@@ -7,6 +7,7 @@ use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Category;
 use App\Models\Like;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -30,7 +31,8 @@ class ProductController extends Controller
     public function create()
     {
         return Inertia::render('upload', [
-            'categories' => Category::latest()->take(20)->get()
+            'categories' => Category::latest()->take(20)->get(),
+            'tags' => Tag::latest()->take(20)->get()
         ]);
     }
 
@@ -70,7 +72,12 @@ class ProductController extends Controller
                         'image' => $image
                     ];
                 }, $images));
-
+                \App\models\TagProduct::insert(array_map(function($tag) use ($product) {
+                    return [
+                        'product_id' => $product->id,
+                        'tag_id' => $tag
+                    ];
+                }, $validated['tags']));
                 return $product;
             });
 
@@ -97,6 +104,7 @@ class ProductController extends Controller
             'product' => $product->load([
                 'images', 
                 'category',
+                'tags',
                 'user' => function($query) {
                     return $query->withExists('followers');
                 }, 

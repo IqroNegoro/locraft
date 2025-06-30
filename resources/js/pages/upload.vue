@@ -5,13 +5,7 @@
             <p class="text-lg text-muted-foreground">Upload your product and tell its story</p>
         </div>
         <div class="rounded-lg border border-gray-200 shadow-sm w-full max-w-xl p-6">
-            <form class="flex flex-col gap-6" @submit.prevent="form.post(route('products.store'), {
-                name: form.name,
-                sub: form.sub,
-                story: form.story,
-                category_id: form.category_id,
-                images: form.images
-            })">
+            <form class="flex flex-col gap-6" @submit.prevent="form.post(route('products.store'))">
                 <div class="flex flex-col gap-2">
                     <label class="text-sm font-medium leading-none" for="name">Product Name</label>
                     <input v-model="form.name"
@@ -48,8 +42,39 @@
                         </template>
                         <span v-else class="p-2 text-sm">There is no categories</span>
                     </div>
-                    <span v-if="form.errors?.category_id" class="text-xs text-red-500">{{ form.errors.category_id
-                    }}</span>
+                    <span v-if="form.errors?.category_id" class="text-xs text-red-500">{{ form.errors.category_id }}</span>
+                </div>
+                <div class="flex flex-col gap-2">
+                    <label class="text-sm font-medium leading-none" for="tags">Product Tags</label>
+                    <div class="flex gap-1">
+                        <button v-for="(tag, i) in selectedTags" :key="tag" @click="() => {
+                            form.tags.splice(i, 1)
+                            selectedTags.splice(i, 1)
+                        }" class="bg-primary rounded-full text-white px-4 py-2 text-sm">
+                            #{{ tag }}
+                        </button>
+                    </div>
+                    <span v-if="form.tags.length" class="text-xs text-gray-500">Click to remove tag</span>
+                    <div v-if="form.tags.length <= 5" class="group relative">
+                        <input v-model="tag" autocomplete="off"
+                            class="flex h-10 w-full rounded-md border border-gray-200 bg-background px-3 py-2 text-base file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+                            id="tags" placeholder="e.g., Leather, Footwear">
+                        <div class="absolute top-full hidden group-focus-within:flex left-0 w-full max-h-96 overflow-y-auto flex-col bg-soft-white rounded-lg shadow border border-gray-200 z-50">
+                            <template v-if="availableTags.filter(v => !form.tags.includes(v.id)).length">
+                                <button v-for="t in availableTags.filter(v => !form.tags.includes(v.id))" :key="t.id"
+                                    @click="() => {
+                                        form.tags.push(t.id);
+                                        selectedTags.push(t.name);
+                                    }" type="button"
+                                    class="flex items-center gap-2 w-full text-left px-4 py-2 text-sm hover:bg-gray-100">
+                                    {{ t.name }}
+                                </button>
+                            </template>
+                            <span v-else class="p-2 text-sm">There is no more tag</span>
+                        </div>
+                    </div>
+                    <span class="text-xs text-gray-500">You can add max 5 tags to your product</span>
+                    <span v-if="form.errors?.tags" class="text-xs text-red-500">{{ form.errors.tags }}</span>
                 </div>
                 <div class="flex flex-col gap-1">
                     <label class="text-sm font-medium leading-none" for="pictures">Pictures</label>
@@ -72,7 +97,7 @@
                 </div>
                 <div class="flex flex-col gap-2">
                     <div class="flex items-center gap-2">
-                        <label class="text-sm font-medium leading-none" for="description">Description (Markdown)</label>
+                        <label class="text-sm font-medium leading-none" for="description">Tell us about story of the product</label>
                     </div>
                     <Quill v-model.trim="form.story" />
                     <span v-if="form.errors?.story" class="text-xs text-red-500">{{ form.errors.story }}</span>
@@ -88,38 +113,46 @@
     </div>
 </template>
 <script setup lang="ts">
-import { router, useForm } from '@inertiajs/vue3'
+import { useForm } from '@inertiajs/vue3'
 import { render } from '@/lib/utils';
 import { ref, watch } from 'vue';
 import Quill from '@/components/Quill.vue';
+import { ICategory, ITag } from '@/types';
 
 const props = defineProps<{
-    categories: {
-        id: number,
-        name: string
-    }[]
+    categories: ICategory[]
+    tags: ITag[]
 }>();
 
 const form = useForm<{
-    name: string,
-    sub: string,
-    story: string,
-    category_id: number | null,
-    images: File[],
+    name: string
+    sub: string
+    story: string
+    category_id: number | null
+    tags: number[]
+    images: File[]
 }>({
     name: '',
     sub: '',
     story: '',
     category_id: null,
+    tags: [],
     images: [],
 });
 
 const category = ref<string>("");
+const tag = ref<string>("");
 const timeout = ref();
 const availableCategories = ref<{
     id: number,
     name: string
 }[]>(props.categories);
+
+const selectedTags = ref<string[]>([]);
+const availableTags = ref<{
+    id: number,
+    name: string
+}[]>(props.tags);
 
 function handleAddImage(event: Event) {
     const input = event.target as HTMLInputElement;
@@ -166,6 +199,25 @@ watch(category, v => {
 
             if (form.category_id) return;
             availableCategories.value = data.data
+        }, 500)
+    }
+});
+
+watch(tag, v => {
+    clearTimeout(timeout.value);
+    if (!v) {
+        availableTags.value = props.tags;
+    } else {
+        timeout.value = setTimeout(async () => {
+            if (form.tags.length > 5) return;
+            const response = await fetch(route('api.tags.search', { q: v }));
+
+            if (!response.ok) return;
+
+            const data = await response.json();
+
+            if (form.tags.length > 5) return;
+            availableTags.value = data.data
         }, 500)
     }
 });

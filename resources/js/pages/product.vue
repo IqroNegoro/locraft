@@ -67,10 +67,8 @@
                 </div>
                 <div class="space-y-4">
                     <h3 class="font-semibold text-primary text-lg">Tags</h3>
-                    <div class="flex flex-wrap gap-3"><span
-                            class="bg-gray-100 hover:bg-primary hover:text-white text-gray-700 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 cursor-pointer hover:shadow-md">#Handmade</span><span
-                            class="bg-gray-100 hover:bg-primary hover:text-white text-gray-700 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 cursor-pointer hover:shadow-md">#Leather</span><span
-                            class="bg-gray-100 hover:bg-primary hover:text-white text-gray-700 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 cursor-pointer hover:shadow-md">#Sustainable</span>
+                    <div class="flex flex-wrap gap-3">
+                        <span v-for="tag in product.tags" :key="tag.id" class="bg-gray-100 hover:bg-primary hover:text-white text-gray-700 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 cursor-pointer hover:shadow-md">#{{ tag.name }}</span>
                     </div>
                 </div>
                 <div class="flex gap-2 mt-2">
@@ -211,7 +209,7 @@
                 </div>
                 <div class="flex items-start gap-5 mb-6">
                     <div class="relative">
-                        <Avatar class="w-20 h-20" :src="product.user!.avatar" />
+                        <Avatar class="w-20 h-20" :src="product.user!.avatar!" />
                     </div>
                     <div class="flex-1">
                         <div class="flex items-center gap-2 mb-2">

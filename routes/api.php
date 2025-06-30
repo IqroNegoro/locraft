@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\TagController;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\User;
@@ -14,6 +15,7 @@ Route::get('/user', function (Request $request) {
 
 Route::get('products/search', [ProductController::class, 'search'])->name('api.products.search');
 Route::get('categories/search', [CategoryController::class, 'search'])->name('api.categories.search');
+Route::get('tags/search', [TagController::class, 'search'])->name('api.tags.search');
 Route::get('search', function (Request $request) {
     try {
         $q = $request->input('q');
