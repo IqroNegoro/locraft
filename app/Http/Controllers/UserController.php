@@ -63,6 +63,7 @@ class UserController extends Controller
             ])) {
                 $request->session()->regenerate();
 
+                if (Auth::user()->role === 'admin') return redirect()->route('admin.index');
                 return redirect()->route('home');
             } else {
                 return back()->with('error', 'Email or password wrong!');

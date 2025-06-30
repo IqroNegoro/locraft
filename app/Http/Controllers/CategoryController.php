@@ -7,6 +7,8 @@ use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
+use Inertia\Inertia;
 
 class CategoryController extends Controller
 {
@@ -15,7 +17,9 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        return Inertia::render('admin/categories/index', [
+            'categories' => Category::all()
+        ]);
     }
 
     /**
@@ -47,7 +51,7 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        //
+        return Inertia::render('admin/categories/edit', compact('category'));
     }
 
     /**
@@ -55,7 +59,14 @@ class CategoryController extends Controller
      */
     public function update(UpdateCategoryRequest $request, Category $category)
     {
-        //
+    try {
+        $data = $request->validated();
+        $data['slug'] = Str::slug($data['name']);
+        $category->update($data);
+        return redirect()->route('admin.categories.index')->with('success', 'Category updated');
+    } catch (\Throwable $e) {
+        return back()->with('error', 'Failed to update category');
+    }
     }
 
     /**
@@ -63,7 +74,12 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        try {
+            $category->delete();
+            return back()->with('success', 'Category deleted');
+        } catch (\Throwable $e) {
+            return back()->with('error', 'Failed to delete category');
+        }
     }
 
     public function search(Request $request) {

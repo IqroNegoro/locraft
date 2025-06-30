@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->references('id')->on('users')->onDeleteCascade();
             $table->string('name');
             $table->string('slug');
-            $table->foreignId('category_id')->references('id')->on('categories')->onDeleteCascade();
+            $table->foreignId('category_id')->references('id')->on('categories')->nullOnDelete();
             $table->string('sub');
             $table->text('story');
             $table->string('image');

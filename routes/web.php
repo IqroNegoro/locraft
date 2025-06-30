@@ -112,4 +112,5 @@ Route::prefix('admin')->middleware(Admin::class)->name('admin.')->group(function
     })->name('index');
 
     Route::resource('reports', ReportController::class)->only(['index', 'show', 'destroy']);
+    Route::resource('categories', CategoryController::class);
 });

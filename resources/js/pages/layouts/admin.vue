@@ -13,6 +13,10 @@
                     <i class="bx bx-file text-lg"></i>
                     Posts
                 </Link>
+                <Link :href="route('admin.categories.index')" class="flex items-center gap-3 px-3 py-2 rounded hover:bg-gray-100 text-gray-700 font-medium">
+                    <i class="bx bxs-hot text-lg"></i>
+                    Categories
+                </Link>
                 <Link :href="route('admin.index')" class="flex items-center gap-3 px-3 py-2 rounded hover:bg-gray-100 text-gray-700 font-medium">
                     <i class="bx bx-purchase-tag text-lg"></i>
                     Tag

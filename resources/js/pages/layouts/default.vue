@@ -25,11 +25,6 @@
                             <span class="font-semibold text-sm text-gray-800">Menu</span>
                         </div>
                         <div class="flex flex-col items-center justify-center text-gray-400 text-sm">
-                            <Link v-if="$page.props.auth.user.role === 'admin'" :href="route('admin.index')"
-                                class="flex items-center gap-2 px-4 py-2 text-sm text-primary hover:bg-gray-50 w-full justify-start">
-                            <i class="bx bxs-user-badge text-lg"></i>
-                            Admin
-                            </Link>
                             <Link :href="route('creators', $page.props.auth.user.username)"
                                 class="flex items-center gap-2 px-4 py-2 text-sm text-primary hover:bg-gray-50 w-full justify-start">
                             <i class="bx bx-user text-lg"></i>
