@@ -31,8 +31,9 @@ Route::middleware('guest')->group(function() {
 });
 
 Route::get('home', function () {
-    $product = Product::with('user', 'category');
+    $product = Product::with('user', 'category', 'tags');
     return Inertia::render('home', [
+        'top_products' => $product->whereDate('created_at', now()->yesterday())->orderBy('total_likes', 'desc')->take(10)->get(),
         'latest_products' => $product->latest()->take(20)->get(),
         'random_products' => $product->inRandomOrder()->get()
     ]);
