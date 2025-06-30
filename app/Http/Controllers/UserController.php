@@ -102,7 +102,7 @@ class UserController extends Controller
     {
         $user = $user->loadExists('followers');
         $products = Product::whereUserId($user->id)->with('category')->withCount('images')->withExists('liked')->get();
-        $product = request()->get('product') ? Product::with('category')->with('images')->withExists('liked')->firstWhere('slug', request()->get('product')) : null;
+        $product = request()->get('product') ? Product::with('category', 'images', 'tags')->withExists('liked')->firstWhere('slug', request()->get('product')) : null;
         return Inertia::render('creator', compact('user', 'products', 'product'));
     }
 

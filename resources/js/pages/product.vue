@@ -68,7 +68,7 @@
                 <div class="space-y-4">
                     <h3 class="font-semibold text-primary text-lg">Tags</h3>
                     <div class="flex flex-wrap gap-3">
-                        <span v-for="tag in product.tags" :key="tag.id" class="bg-gray-100 hover:bg-primary hover:text-white text-gray-700 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 cursor-pointer hover:shadow-md">#{{ tag.name }}</span>
+                        <Tag v-for="tag in product.tags" :key="tag.id" :name="tag.name" />
                     </div>
                 </div>
                 <div class="flex gap-2 mt-2">
@@ -82,10 +82,10 @@
                         class="bg-gray-100 text-primary rounded-lg px-3 py-2 flex items-center justify-center hover:bg-gray-200 transition">
                         <i class="bx bx-share-alt"></i>
                     </button>
-                    <button
+                    <!-- <button
                         class="bg-gray-100 text-primary rounded-lg px-3 py-2 flex items-center justify-center hover:bg-gray-200 transition">
                         <i class="bx bx-bookmark"></i>
-                    </button>
+                    </button> -->
                 </div>
             </div>
         </div>
@@ -269,6 +269,8 @@
 </template>
 <script setup lang="ts">
 import Avatar from '@/components/Avatar.vue';
+import Tag from '@/components/Product/Tag.vue';
+
 import { IProduct } from '@/types';
 import {
     Link,

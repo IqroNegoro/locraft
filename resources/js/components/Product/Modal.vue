@@ -7,7 +7,7 @@
             </button>
             <div
                 class="flex flex-col relative h-full md:max-h-full md:h-max md:flex-row w-full max-md:overflow-y-scroll">
-                <div class="md:w-1/2 max-md:h-max h-full relative bg-gray-100">
+                <div class="md:w-3/5 max-md:h-max h-full relative bg-gray-100">
                     <img :src="product.images?.[imageIndex]?.image" :alt="product.images?.[imageIndex]?.alt_text || ''"
                         class="w-full" />
                     <button v-if="product.images?.length && imageIndex != 0" @click="imageIndex--"
@@ -28,17 +28,17 @@
                     </div>
                 </div>
 
-                <div class="md:w-1/2 flex flex-col justify-between p-4 mt-3">
+                <div class="md:w-2/5 flex flex-col justify-between p-4 mt-3 gap-4">
                     <div class="flex flex-col gap-4">
                         <div class="flex items-center justify-between gap-8">
                             <div class="flex gap-2 min-w-0">
                                 <Link :href="route('creators', user.username)">
-                                <Avatar :src="user.avatar!" class="w-12 h-12 shrink-0" />
+                                    <Avatar :src="user.avatar!" class="w-12 h-12 shrink-0" />
                                 </Link>
                                 <div class="min-w-0 flex flex-col">
                                     <Link :href="route('creators', user.username)" class="text-lg hover:underline">{{
                                     user.name }}</Link>
-                                    <span class="text-gray-500 truncate text-xs">{{ user.bio }}</span>
+                                    <span class="text-gray-500 truncate text-xs">@{{ user.username }}</span>
                                 </div>
                             </div>
                             <span
@@ -46,9 +46,12 @@
                                 }}</span>
                         </div>
                         <h2 class="font-playfair text-3xl">{{ product?.name }}</h2>
+                        <div class="flex gap-1">
+                            <Tag v-for="tag in product.tags" :key="tag.id" :name="tag.name" />
+                        </div>
                         <div class="flex gap-6 items-center">
                             <div class="flex gap-1 items-center">
-                                <span class="bg-red-100 text-red-800 p-1 rounded-full">
+                                <span class="flex items-center justift-center p-1 bg-red-100 text-red-800 rounded-full">
                                     <i class="bx bxs-heart"></i>
                                 </span>
                                 <span>{{ product?.likes }}</span>
@@ -69,9 +72,9 @@
                         <button class="bg-gray-200 px-4">
                             <i class="bx bx-share-alt"></i>
                         </button>
-                        <button class="bg-gray-200 px-4">
+                        <!-- <button class="bg-gray-200 px-4">
                             <i class="bx bx-bookmark"></i>
-                        </button>
+                        </button> -->
                         <Link :href="route('products.show', product.slug)"
                             class="bg-gray-200 px-4 flex justify-center items-center">
                         <i class="bx bx-link-external"></i>
@@ -88,9 +91,9 @@
                 <button class="bg-gray-200 px-4">
                     <i class="bx bx-share-alt"></i>
                 </button>
-                <button class="bg-gray-200 px-4">
+                <!-- <button class="bg-gray-200 px-4">
                     <i class="bx bx-bookmark"></i>
-                </button>
+                </button> -->
                 <Link :href="route('products.show', product.slug)"
                     class="bg-gray-200 px-4 flex justify-center items-center">
                 <i class="bx bx-link-external"></i>
@@ -103,7 +106,8 @@
 import { IProduct, IUser } from '@/types';
 import { Link, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
-import Avatar from '../Avatar.vue';
+import Avatar from '@/components/Avatar.vue';
+import Tag from '@/components/Product/Tag.vue';
 
 defineEmits<{
     (e: 'close'): void
