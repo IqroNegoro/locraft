@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
@@ -75,6 +76,7 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         try {
+            if (Auth::user()->role != 'admin') abort(403);
             $category->delete();
             return back()->with('success', 'Category deleted');
         } catch (\Throwable $e) {

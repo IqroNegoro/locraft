@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Report;
 use App\Http\Requests\StoreReportRequest;
 use App\Http\Requests\UpdateReportRequest;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class ReportController extends Controller
@@ -32,7 +33,17 @@ class ReportController extends Controller
      */
     public function store(StoreReportRequest $request)
     {
-        //
+    try {
+        $data = $request->validated();
+
+        $data['user_id'] = Auth::user()->id;
+
+        Report::create($data);
+
+        return redirect()->back()->with('success', 'Your report has we received');
+    } catch (\Throwable $e) {
+        return redirect()->back()->with('error', 'Failed to report product');
+    }
     }
 
     /**
@@ -58,7 +69,13 @@ class ReportController extends Controller
      */
     public function update(UpdateReportRequest $request, Report $report)
     {
-        //
+        try {
+            $report->update($request->validated());
+
+            return back()->with('success', 'Report closed');
+        } catch (\Throwable $e) {
+            return back()->with('error', 'Failed to close report');
+        }
     }
 
     /**

@@ -9,6 +9,7 @@
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">User</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Product</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Action</th>
                     </tr>
                 </thead>
@@ -18,8 +19,11 @@
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                             <span>{{ report.user?.name }}</span>
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                            <span>{{ report.product?.name }}</span>
+                        <td class="px-6 py-4 flex gap-2 whitespace-nowrap text-sm text-gray-700">
+                            <Image class="w-24 rounded" :src="report.product?.image" :alt="report.product?.name" />
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm">
+                            <span class="w-max uppercase p-2 font-semibold rounded-full text-xs" :class="{'bg-blue-100 text-blue-800': report.status === 'pending', 'bg-blue-100 text-green-800': report.status === 'closed'}"> {{ report.status }} </span>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ report.created_at }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm">
@@ -35,6 +39,7 @@
     </div>
 </template>
 <script setup lang="ts">
+import Image from '@/components/Image.vue';
 import { IReport } from '@/types';
 
 defineProps<{

@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('follows', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->references('id')->on('users')->onDeleteCascade();
-            $table->foreignId('followed_user_id')->references('id')->on('users')->onDeleteCascade();
+            $table->foreignId('user_id')->references('id')->on('users')->cascadeOnDelete();
+            $table->foreignId('followed_user_id')->references('id')->on('users')->cascadeOnDelete();
 
             $table->unique(['user_id', 'followed_user_id']);
             $table->timestamps();

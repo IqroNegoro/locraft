@@ -205,8 +205,6 @@ function handleAddImage(event: Event) {
     const maxSize = 2 * 1024 * 1024;
     const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
 
-    const validFiles: File[] = [];
-
     const file = input.files[0];
     if (file.size > maxSize) {
         alert(`File "${file.name}" exceed 2mb size`);
@@ -216,7 +214,6 @@ function handleAddImage(event: Event) {
         alert(`File "${file.name}" not supported`);
         return;
     }
-    validFiles.push(file);
 
     form.avatar = file
     input.value = "";

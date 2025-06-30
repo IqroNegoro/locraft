@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('notifications', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->references('id')->on('users')->onDeleteCascade();
+            $table->foreignId('user_id')->references('id')->on('users')->cascadeOnDelete();
+            $table->foreignId('from_user_id')->references('id')->on('users')->cascadeOnDelete();
             $table->foreignId('product_id')->nullable()->references('id')->on('products')->nullOnDelete();
-            $table->enum('type', ['like', 'review', 'follow', 'report', 'another']);
-            $table->string('content');
-            $table->boolean('is_read')->default(false);
+            $table->enum('type', ['like', 'review', 'follow', 'report', 'award  ', 'another']);
+            $table->string('content')->nullable();
             $table->timestamps();
         });
     }

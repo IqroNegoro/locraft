@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('tag_products', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')->references('id')->on('products')->onDelete('cascade');
-            $table->foreignId('tag_id')->references('id')->on('tags')->onDelete('cascade');
+            $table->foreignId('product_id')->references('id')->on('products')->cascadeOnDelete();
+            $table->foreignId('tag_id')->references('id')->on('tags')->cascadeOnDelete();
             $table->timestamps();
 
             $table->unique(['product_id', 'tag_id']);

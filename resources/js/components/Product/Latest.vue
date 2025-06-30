@@ -15,7 +15,7 @@
             </span>
         </div>
         <div class="p-5">
-            <h3 class="font-semibold text-lg text-gray-900 leading-tight mb-0.5 font-playfair">
+            <h3 class="truncate font-semibold text-lg text-gray-900 leading-tight mb-0.5 font-playfair">
                 {{ product.name }}
             </h3>
             <Link :href="route('creators', product?.user?.username)" class="text-gray-500 text-sm mb-2">by {{
@@ -28,10 +28,6 @@
                         </span>
                         <span>{{ product?.likes }}</span>
                     </div>
-                    <span class="flex items-center gap-1">
-                        <span>👁️</span>
-                        890
-                    </span>
                 </div>
                 <Link :href="route('products.show', product.slug)"
                     class="border border-gray-400 rounded px-4 py-1 text-sm font-semibold hover:bg-gray-100 transition">

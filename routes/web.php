@@ -27,8 +27,9 @@ Route::middleware('guest')->group(function() {
     Route::get('login', [UserController::class, 'login'])->name('login');
     Route::post('login', [UserController::class, 'loginPost'])->name('login.post');
     
-    Route::delete('logout', [UserController::class, 'logout'])->name('logout');
 });
+
+Route::delete('logout', [UserController::class, 'logout'])->name('logout')->middleware('auth');
 
 Route::get('home', function () {
     $product = Product::with('user', 'category', 'tags');
@@ -108,12 +109,15 @@ Route::get('search', function(Request $request) {
     ]);
 })->name('search');
 
+Route::post('reports', [ReportController::class, 'store'])->name('reports.store');
+
 Route::prefix('admin')->middleware(Admin::class)->name('admin.')->group(function() {
     Route::get('/', function() {
         return Inertia::render('admin/index');
     })->name('index');
 
-    Route::resource('reports', ReportController::class)->only(['index', 'show', 'destroy']);
+    Route::resource('products', ProductController::class)->except(['store', 'update']);
+    Route::resource('reports', ReportController::class)->only(['index', 'show', 'update', 'destroy']);
     Route::resource('categories', CategoryController::class);
     Route::resource('tags', TagController::class);
 });

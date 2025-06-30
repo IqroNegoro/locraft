@@ -63,7 +63,7 @@
                     </div>
                 </Link>
                 <Link :href="route('creators', product.user?.username)" class="flex items-center w-max gap-2 px-4 py-3">
-                    <img :src="product.user?.avatar" class="w-8 h-8 rounded-full object-cover border" v-if="product.user?.avatar" />
+                    <Avatar :src="product.user?.avatar" class="w-8 h-8 rounded-full object-cover" v-if="product.user?.avatar" />
                     <div>
                         <div class="font-semibold text-sm text-gray-800">{{ product.user?.name }}</div>
                         <div class="text-xs text-gray-400">@{{ product.user?.username }}</div>
@@ -93,8 +93,10 @@
     </div>
 </template>
 <script setup lang="ts">
+import Avatar from '@/components/Avatar.vue';
 import { ICategory, IProduct } from '@/types';
 import { Link, useForm } from '@inertiajs/vue3';
+import { onMounted } from 'vue';
 
 defineProps<{
     products: IProduct[]
@@ -107,10 +109,14 @@ const form = useForm({
     sort: ''
 });
 
+onMounted(() => {
+    form.top = new URLSearchParams(window.location.search).get('top') || '';
+    form.category = new URLSearchParams(window.location.search).get('category') || '';
+    form.sort = new URLSearchParams(window.location.search).get('sort') || '';
+});
+
 const sortBy = [
     { name: 'Popular', slug: 'popular' },
-    // { name: 'Lowest Price', slug: 'lowest-price' },
-    // { name: 'Higher Price', slug: 'higher-price' },
     { name: 'Newest', slug: 'newest' },
     { name: 'Oldest', slug: 'oldest' }
 ];

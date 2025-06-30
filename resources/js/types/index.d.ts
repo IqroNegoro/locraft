@@ -153,6 +153,7 @@ export interface IReport {
     user_id: number;
     product_id: number;
     reason: string;
+    status: string;
     created_at: string;
     updated_at: string;
 

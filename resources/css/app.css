@@ -19,7 +19,7 @@
 
 @layer base {
     * {
-        @apply outline-none appearance-none;
+        @apply outline-none appearance-none resize-none;
     }
 
     [contenteditable]:empty:before{

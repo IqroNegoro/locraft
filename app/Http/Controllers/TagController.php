@@ -6,6 +6,7 @@ use App\Models\Tag;
 use App\Http\Requests\StoreTagRequest;
 use App\Http\Requests\UpdateTagRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Illuminate\Support\Str;
 
@@ -84,6 +85,8 @@ class TagController extends Controller
     public function destroy(Tag $tag)
     {
         try {
+            if (Auth::user()->role != 'admin') abort(403);
+
             $tag->delete();
             return back()->with('success', 'Tag deleted');
         } catch (\Throwable $e) {

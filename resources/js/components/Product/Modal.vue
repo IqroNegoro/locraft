@@ -8,8 +8,8 @@
             <div
                 class="flex flex-col relative h-full md:max-h-full md:h-max md:flex-row w-full max-md:overflow-y-scroll">
                 <div class="md:w-3/5 max-md:h-max h-full relative bg-gray-100">
-                    <img :src="product.images?.[imageIndex]?.image" :alt="product.images?.[imageIndex]?.alt_text || ''"
-                        class="w-full" />
+                    <Image :src="product.images?.[imageIndex]?.image!" :alt="product.images?.[imageIndex]?.alt_text || ''"
+                        class="w-full h-full" :key="product.images?.[imageIndex]?.image" />
                     <button v-if="product.images?.length && imageIndex != 0" @click="imageIndex--"
                         class="absolute top-1/2 -translate-y-1/2 left-2 p-2 flex justify-center items-center bg-soft-white/75 rounded-full"
                         aria-label="Sebelumnya">
@@ -36,8 +36,7 @@
                                     <Avatar :src="user.avatar!" class="w-12 h-12 shrink-0" />
                                 </Link>
                                 <div class="min-w-0 flex flex-col">
-                                    <Link :href="route('creators', user.username)" class="text-lg hover:underline">{{
-                                    user.name }}</Link>
+                                    <Link :href="route('creators', user.username)" class="text-lg hover:underline tracking-tight font-medium">{{user.name }}</Link>
                                     <span class="text-gray-500 truncate text-xs">@{{ user.username }}</span>
                                 </div>
                             </div>
@@ -45,7 +44,7 @@
                                 class="bg-primary text-white rounded-full w-max h-max py-1 px-4 flex justify-center items-center text-xs font-light">{{ product.category.name
                                 }}</span>
                         </div>
-                        <h2 class="font-playfair text-3xl">{{ product?.name }}</h2>
+                        <h2 class="font-playfair text-3xl font-medium">{{ product?.name }}</h2>
                         <div class="flex gap-1">
                             <Tag v-for="tag in product.tags" :key="tag.id" :name="tag.name" />
                         </div>
@@ -107,6 +106,7 @@ import { IProduct, IUser } from '@/types';
 import { Link, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import Avatar from '@/components/Avatar.vue';
+import Image from '@/components/Image.vue';
 import Tag from '@/components/Product/Tag.vue';
 
 defineEmits<{

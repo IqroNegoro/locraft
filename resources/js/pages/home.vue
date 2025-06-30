@@ -4,7 +4,7 @@
             <div class="text-xs text-gray-500 tracking-wider">
                 Product <span class="text-3xl mx-4 text-primary font-playfair">#1</span> of the day · {{ formatNumber(top_products[0]?.total_likes || 0) }} Total Likes
             </div>
-            <div class="flex flex-col-reverse md:flex-row justify-between gap-4 w-full">
+            <div v-if="top_products.length" class="flex flex-col-reverse md:flex-row justify-between gap-4 w-full">
                 <div class="w-1/2 flex flex-col justify-center">
                     <div class="flex items-center gap-2 mb-2">
                         <span class="bg-gray-100 text-xs px-2 py-1 rounded font-semibold text-gray-600">{{ top_products[0]?.category.name }}</span>
@@ -18,7 +18,7 @@
                         {{ top_products[0]?.sub }}
                     </p>
                     <div class="flex items-center gap-2 text-xs text-gray-500 mb-4">
-                        <span>by <span class="font-semibold text-gray-700">{{ top_products[0].user!.name }}</span></span>
+                        <span>by <span class="font-semibold text-gray-700">{{ top_products[0].user?.name }}</span></span>
                         <span class="mx-1">•</span>
                         <span class="flex items-center gap-1">
                             <i class="bx bx-heart text-red-400"></i> {{ top_products[0].likes }}
@@ -47,11 +47,15 @@
                         class="rounded-lg w-full md:w-4xl object-cover">
                 </div>
             </div>
+            <div class="flex-col gap-1">
+                <span class="text-gray-500 text-sm">Oops, there is no product that we can show</span>
+                <h2 class="text-3xl font-bold text-center font-playfair mb-2">Can you be the one?</h2>
+            </div>
         </div>
         <div class="w-full">
             <h2 class="text-3xl font-bold text-center font-playfair mb-2">Another Champions of Today</h2>
             <p class="text-center text-gray-500 mb-8 text-sm">The products that captured hearts and gained incredible exposure</p>
-            <div class="grid grid-cols-1 grid-flow-row md:grid-cols-3 gap-6 justify-center">
+            <div v-if="top_products.length > 1" class="grid grid-cols-1 grid-flow-row md:grid-cols-3 gap-6 justify-center">
                 <div v-for="(product, i) in top_products.slice(1)" :key="product.id" class="rounded-lg hover:shadow-lg transition w-full overflow-hidden">
                     <div class="relative overflow-hidden group">
                         <span
@@ -82,6 +86,10 @@
                         <Link :href="route('products.show', product.slug)" class="border border-gray-300 text-gray-700 px-4 py-1 rounded font-semibold text-xs hover:bg-gray-100 transition">View</Link>
                     </div>
                 </div>
+            </div>
+            <div class="flex-col gap-1">
+                <span class="text-gray-500 text-center block text-sm">Oops, there is no product that we can show</span>
+                <h2 class="text-3xl font-bold text-center font-playfair mb-2">Can you be the one?</h2>
             </div>
         </div>
         <div class="w-full flex flex-col gap-12">
@@ -152,7 +160,7 @@
                     View All Recent
                 </button>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 grid-row-1">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 grid-row-1 gap-4">
                 <Latest v-for="product in latest_products" :key="product.id" :product="product" />
             </div>
         </div>

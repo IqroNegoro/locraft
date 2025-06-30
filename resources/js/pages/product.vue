@@ -32,10 +32,6 @@
                     <div class="flex items-center gap-3"><span
                             class="bg-gradient-to-r from-primary to-gray-800 text-white px-4 py-2 rounded-full text-sm font-medium">{{
                             product.category.name }}</span>
-                        <div class="flex items-center gap-1 text-amber-500">
-                            <i class="bx bx-award text-lg"></i>
-                            <span class="text-sm font-medium text-gray-700">Featured</span>
-                        </div>
                     </div><span class="text-sm text-gray-500">Uploaded {{ product.created_at }}</span>
                 </div>
                 <div class="space-y-3">
@@ -65,7 +61,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="space-y-4">
+                <div class="space-y-4" v-if="product.tags.length">
                     <h3 class="font-semibold text-primary text-lg">Tags</h3>
                     <div class="flex flex-wrap gap-3">
                         <Tag v-for="tag in product.tags" :key="tag.id" :name="tag.name" />
@@ -82,6 +78,11 @@
                         class="bg-gray-100 text-primary rounded-lg px-3 py-2 flex items-center justify-center hover:bg-gray-200 transition">
                         <i class="bx bx-share-alt"></i>
                     </button>
+                    <button
+                        @click="showReport = true"
+                        class="bg-gray-100 text-primary rounded-lg px-3 py-2 flex items-center justify-center hover:bg-gray-200 transition">
+                        <i class="bx bxs-flag-alt"></i>
+                    </button>
                     <!-- <button
                         class="bg-gray-100 text-primary rounded-lg px-3 py-2 flex items-center justify-center hover:bg-gray-200 transition">
                         <i class="bx bx-bookmark"></i>
@@ -91,7 +92,7 @@
         </div>
         <div class="w-full flex flex-col md:grid grid-cols-[2fr_1fr] grid-flow-row justify-center gap-12">
             <div class="flex flex-col gap-12">
-                <h2 class="text-2xl font-playfair font-bold text-primary mb-6">Product Story</h2>
+                <h2 class="text-2xl font-playfair font-bold text-primary">Product Story</h2>
                 <div class="!w-full !max-w-none prose-h1:font-playfair prose-h2:font-playfair border border-gray-200 bg-soft-white rounded-lg p-8 prose-gray prose prose-sm"
                     id="story" v-html="product.story"></div>
                 <div class="flex flex-col gap-10">
@@ -249,7 +250,7 @@
                     </div>
                 </div>
                 <div class="space-y-3">
-                    <button @click="router.put(route('creators.follow', product.user!.username))"
+                    <button v-if="$page.props.auth?.user?.id != product.user!.id" @click="router.put(route('creators.follow', product.user!.username))"
                         class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 bg-primary hover:bg-primary/90 px-4 py-2 w-full bg-gradient-to-r from-primary to-gray-800 hover:from-gray-800 hover:to-primary text-white shadow-lg hover:shadow-xl transition-all duration-200 h-11">
                         <i class="bx mr-2" :class="{
                             'bx-group': !product.user!.followers_exists, 'bx-check-circle': product.user!
@@ -265,10 +266,13 @@
                 </div>
             </div>
         </div>
+
+        <Report v-if="showReport" @close="showReport = false" :id="product.id" />
     </div>
 </template>
 <script setup lang="ts">
 import Avatar from '@/components/Avatar.vue';
+import Report from '@/components/Product/Report.vue';
 import Tag from '@/components/Product/Tag.vue';
 
 import { IProduct } from '@/types';
@@ -304,6 +308,8 @@ const form = useForm<{
     rating: 0,
     review: ''
 });
+
+const showReport = ref(false);
 
 const totalRating = computed(() => Object.values(props.ratings).reduce((prev, curr) => prev += curr, 0));
 const rating = computed(() => totalRating.value ? (Object.entries(props.ratings).reduce((sum, [star, count]) => sum + (Number(star) * count), 0) / totalRating.value).toFixed(1) : '0.0')

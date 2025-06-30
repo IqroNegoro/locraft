@@ -8,19 +8,16 @@
                 <button @click="showSearch = true" class="flex items-center justify-center">
                     <i class="bx bx-search text-gray-500 text-lg"></i>
                 </button>
-                <Link :href="route('products.create')"
-                    class="border border-gray-200 text-primary text-sm px-3 py-1 rounded hover:bg-secondary transition">
-                Submit Product</Link>
-                <div v-if="$page.props.auth.user" class="flex gap-4 items-center relative group">
+                <div v-if="$page.props.auth.user" class="flex gap-4 group items-center relative group">
                     <div>
-                        <i class="bx bx-bell text-2xl"></i>
+                        <i class="bx bx-bell text-gray-500 text-lg"></i>
                     </div>
-                    <button class="flex items-center focus:outline-none" @click="showDropdown = !showDropdown"
+                    <button class="flex items-center focus:outline-none"
                         type="button">
                         <Avatar :src="$page.props.auth.user.avatar" class="w-10 h-10" />
                     </button>
-                    <div v-if="showDropdown"
-                        class="absolute top-full right-0 mt-2 w-64 bg-soft-white rounded-lg shadow border border-gray-200 z-50">
+                    <div
+                        class="group-focus-within:block hidden absolute top-full right-0 mt-2 w-64 bg-soft-white rounded-lg shadow border border-gray-200 z-50">
                         <div class="px-4 py-3 border-b border-gray-200">
                             <span class="font-semibold text-sm text-gray-800">Menu</span>
                         </div>
@@ -30,12 +27,17 @@
                             <i class="bx bx-user text-lg"></i>
                             Profile
                             </Link>
+                            <Link :href="route('products.create')"
+                                class="flex items-center gap-2 px-4 py-2 text-sm text-primary hover:bg-gray-50 w-full justify-start md:hidden">
+                                <i class="bx bxs-cube-alt text-lg"></i>
+                                Submit Product
+                            </Link>
                             <Link :href="route('user.setting')"
                                 class="flex items-center gap-2 px-4 py-2 text-sm text-primary hover:bg-gray-50 w-full justify-start">
                             <i class="bx bx-cog text-lg"></i>
                             Setting
                             </Link>
-                            <form @submit.prevent="router.delete(route('logout'))" method="POST" class="w-full">
+                            <form @submit.prevent="router.delete(route('logout'))" class="w-full">
                                 <button type="submit"
                                     class="flex items-center gap-2 w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-gray-50">
                                     <i class="bx bx-log-out text-lg"></i>
@@ -45,13 +47,17 @@
                         </div>
                     </div>
                 </div>
-                <Link v-else :href="route('login')" class="flex items-center border border-gray-200 p-1.5">
-                <i class="bx bx-log-in"></i>
+                <Link v-else :href="route('login')" class="flex items-center text-gray-500 p-1.5">
+                <i class="bx bx-user"></i>
+                </Link>
+                <Link :href="$page.props.auth.user ? route('products.create') : route('login')"
+                class="bg-primary text-white text-sm px-3 py-2 rounded transition max-md:hidden">
+                    Submit Product
                 </Link>
             </div>
         </nav>
 
-        <Search v-if="showSearch" @close="showSearch = false" />
+        <Search @close="showSearch = false" :show="showSearch" />
 
         <div class="px-4 md:px-24 py-6 min-h-dvh">
             <slot />
@@ -157,13 +163,11 @@
 <script setup lang="ts">
 import Avatar from '@/components/Avatar.vue';
 import Search from '@/components/Search.vue';
-import { Link, router, usePage } from '@inertiajs/vue3';
-import { ref, watch } from 'vue';
+import { Link, router } from '@inertiajs/vue3';
+import { ref } from 'vue';
 
-const showDropdown = ref<boolean>(false);
 const showSearch = ref<boolean>(false);
 
-watch(() => usePage().url, () => showDropdown.value = showSearch.value = false);
 </script>
 <style scoped>
 .toast-fade-enter-active,

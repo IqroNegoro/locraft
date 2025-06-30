@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('reports', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->references('id')->on('users')->onDeleteCascade();
-            $table->foreignId('product_id')->references('id')->on('products')->onDeleteCascade();
+            $table->foreignId('user_id')->references('id')->on('users')->cascadeOnDelete();
+            $table->foreignId('product_id')->references('id')->on('products')->cascadeOnDelete();
             $table->text('reason');
+            $table->enum('status', ['pending', 'closed']);
             $table->timestamps();
         });
     }

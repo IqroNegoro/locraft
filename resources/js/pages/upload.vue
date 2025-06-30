@@ -2,7 +2,7 @@
     <div class="flex flex-col justify-center items-center">
         <div class="text-center mb-8">
             <h1 class="text-4xl font-playfair font-bold text-primary mb-4">Share Your Creation</h1>
-            <p class="text-lg text-muted-foreground">Upload your product and tell its story</p>
+            <p class="text-lg text-gray-500 font-light">Upload your product and tell its story</p>
         </div>
         <div class="rounded-lg border border-gray-200 shadow-sm w-full max-w-xl p-6">
             <form class="flex flex-col gap-6" @submit.prevent="form.post(route('products.store'))">
@@ -24,7 +24,7 @@
                     <label class="text-sm font-medium leading-none" for="category_id">Category</label>
                     <input v-if="!form.category_id" v-model="category" autocomplete="off"
                         class="flex h-10 w-full rounded-md border border-gray-200 bg-background px-3 py-2 text-base file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
-                        id="category_id" placeholder="e.g., Leather Goods, Pottery, Jewelry" required>
+                        id="category_id" placeholder="e.g., Pottery, Jewelry" required>
                     <button v-else type="button" @click="form.category_id = null"
                         class="w-max flex flex-col items-start">
                         {{availableCategories.find(v => v.id === form.category_id || v.name.includes(category))?.name

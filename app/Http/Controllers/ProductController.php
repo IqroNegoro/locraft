@@ -22,7 +22,9 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        return Inertia::render('admin/products/index', [
+            'products' => Product::with('user')->get()
+        ]);
     }
 
     /**
@@ -72,12 +74,14 @@ class ProductController extends Controller
                         'image' => $image
                     ];
                 }, $images));
-                \App\models\TagProduct::insert(array_map(function($tag) use ($product) {
-                    return [
+                if (!empty($validated['tags'])) {
+                    \App\models\TagProduct::insert(array_map(function($tag) use ($product) {
+                        return [
                         'product_id' => $product->id,
                         'tag_id' => $tag
                     ];
-                }, $validated['tags']));
+                    }, $validated['tags']));
+                }
                 return $product;
             });
 
@@ -138,7 +142,25 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        try {
+            if (!Auth::check()) abort(403);
+
+            if (Auth::user()->role === 'admin' || Auth::user()->id === $product->user_id) {
+                $images = $product->images();
+
+                foreach ($images as $image) {
+                    if (Storage::disk('public')->exists('images/products/' . $image->image)) {
+                        Storage::disk('public')->delete('images/products/' . $image->image);
+                    }
+                }
+                
+                $product->delete();
+            }
+            return back()->with('success', 'Product deleted');
+        } catch (\Throwable $e) {
+            return $e;
+            return back()->with('error', 'Failed to delete product');
+        }
     }
 
     public function like(Request $request, Product $product)
