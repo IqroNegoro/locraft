@@ -9,4 +9,11 @@ class Tag extends Model
 {
     /** @use HasFactory<\Database\Factories\TagFactory> */
     use HasFactory;
+
+    protected $guarded = ['id'];
+
+    public function getRouteKeyName() : string
+    {
+        return 'slug';
+    }
 }

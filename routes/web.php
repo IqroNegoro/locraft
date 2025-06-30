@@ -5,6 +5,7 @@ use App\Http\Controllers\LikeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\Admin;
 use App\Models\Category;
@@ -113,4 +114,5 @@ Route::prefix('admin')->middleware(Admin::class)->name('admin.')->group(function
 
     Route::resource('reports', ReportController::class)->only(['index', 'show', 'destroy']);
     Route::resource('categories', CategoryController::class);
+    Route::resource('tags', TagController::class);
 });

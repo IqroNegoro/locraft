@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Tag;
 use App\Http\Requests\StoreTagRequest;
 use App\Http\Requests\UpdateTagRequest;
+use Inertia\Inertia;
+use Illuminate\Support\Str;
 
 class TagController extends Controller
 {
@@ -13,7 +15,9 @@ class TagController extends Controller
      */
     public function index()
     {
-        //
+        return Inertia::render('admin/tags/index', [
+            'tags' => Tag::all()
+        ]);
     }
 
     /**
@@ -21,7 +25,7 @@ class TagController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('admin/tags/create');
     }
 
     /**
@@ -29,7 +33,17 @@ class TagController extends Controller
      */
     public function store(StoreTagRequest $request)
     {
-        //
+        try {
+            $data = $request->validated();
+
+            $data['slug'] = Str::slug($data['name']);
+
+            Tag::create($data);
+
+            return redirect()->route('admin.tags.index')->with('success', 'Tag created');
+        } catch (\Throwable $e) {
+            return back()->with('error', 'Failed to create tag');
+        }
     }
 
     /**
@@ -45,7 +59,7 @@ class TagController extends Controller
      */
     public function edit(Tag $tag)
     {
-        //
+        return Inertia::render('admin/tags/edit', compact('tag'));
     }
 
     /**
@@ -53,7 +67,14 @@ class TagController extends Controller
      */
     public function update(UpdateTagRequest $request, Tag $tag)
     {
-        //
+        try {
+            $data = $request->validated();
+            $data['slug'] = Str::slug($data['name']);
+            $tag->update($data);
+            return redirect()->route('admin.tags.index')->with('success', 'Tag updated');
+        } catch (\Throwable $e) {
+            return back()->with('error', 'Failed to update tag');
+        }
     }
 
     /**
@@ -61,6 +82,11 @@ class TagController extends Controller
      */
     public function destroy(Tag $tag)
     {
-        //
+        try {
+            $tag->delete();
+            return back()->with('success', 'Tag deleted');
+        } catch (\Throwable $e) {
+            return back()->with('error', 'Failed to delete tag');
+        }
     }
 }

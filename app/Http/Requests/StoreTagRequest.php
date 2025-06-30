@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class StoreTagRequest extends FormRequest
 {
@@ -11,7 +12,7 @@ class StoreTagRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return Auth::check() && Auth::user()->role === 'admin';
     }
 
     /**
@@ -22,7 +23,7 @@ class StoreTagRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|string|max:255|unique:tags,name'
         ];
     }
 }

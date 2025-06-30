@@ -59,14 +59,14 @@ class CategoryController extends Controller
      */
     public function update(UpdateCategoryRequest $request, Category $category)
     {
-    try {
-        $data = $request->validated();
-        $data['slug'] = Str::slug($data['name']);
-        $category->update($data);
-        return redirect()->route('admin.categories.index')->with('success', 'Category updated');
-    } catch (\Throwable $e) {
-        return back()->with('error', 'Failed to update category');
-    }
+        try {
+            $data = $request->validated();
+            $data['slug'] = Str::slug($data['name']);
+            $category->update($data);
+            return redirect()->route('admin.categories.index')->with('success', 'Category updated');
+        } catch (\Throwable $e) {
+            return back()->with('error', 'Failed to update category');
+        }
     }
 
     /**

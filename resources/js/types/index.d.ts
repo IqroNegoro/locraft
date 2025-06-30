@@ -160,3 +160,11 @@ export interface IReport {
 
     createdAt?: string;
 }
+
+export interface ITag {
+    id: number;
+    name: string;
+    slug: string;
+    created_at: string;
+    updated_at: string;
+}

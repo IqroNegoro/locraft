@@ -17,9 +17,9 @@
                     <i class="bx bxs-hot text-lg"></i>
                     Categories
                 </Link>
-                <Link :href="route('admin.index')" class="flex items-center gap-3 px-3 py-2 rounded hover:bg-gray-100 text-gray-700 font-medium">
+                <Link :href="route('admin.tags.index')" class="flex items-center gap-3 px-3 py-2 rounded hover:bg-gray-100 text-gray-700 font-medium">
                     <i class="bx bx-purchase-tag text-lg"></i>
-                    Tag
+                    Tags
                 </Link>
                 <Link :href="route('admin.reports.index')" class="flex items-center gap-3 px-3 py-2 rounded hover:bg-gray-100 text-gray-700 font-medium">
                     <i class="bx bx-flag text-lg"></i>
