@@ -30,7 +30,7 @@
                             <div>
                                 <div class="flex justify-between">
                                     <h3 class="font-bold text-primary mb-2">Products</h3>
-                                    <Link v-if="products && products.length" href="#"
+                                    <Link v-if="products && products.length" :href="route('search')"
                                         class="text-sm font-medium flex gap-2 items-center">
                                     See More <i class="bx bx-right-arrow-alt"></i>
                                     </Link>
@@ -55,7 +55,7 @@
                             <div>
                                 <div class="flex justify-between">
                                     <h3 class="font-bold text-primary mb-2">Categories</h3>
-                                    <Link v-if="categories && categories.length" href="#"
+                                    <Link v-if="categories && categories.length" :href="route('search')"
                                         class="text-sm font-medium flex gap-2 items-center">
                                     See More <i class="bx bx-right-arrow-alt"></i>
                                     </Link>
@@ -77,7 +77,7 @@
                             <div>
                                 <div class="flex justify-between">
                                     <h3 class="font-bold text-primary mb-2">Users</h3>
-                                    <Link v-if="users && users.length" href="#"
+                                    <Link v-if="users && users.length" :href="route('search')"
                                         class="text-sm font-medium flex gap-2 items-center">
                                     See More <i class="bx bx-right-arrow-alt"></i>
                                     </Link>

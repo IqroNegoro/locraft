@@ -19,11 +19,11 @@
                 <button type="button" class="relative group flex gap-1 cursor-pointer md:justify-center items-center py-3 px-4 bg-soft-white rounded-md">
                     {{ form.category ? categories.find(v => v.slug === form.category)?.name : 'Category' }} <i class="bx bx-chevron-down text-xl group-focus-within:-rotate-180 transition"></i>
                     <div class="hidden group-focus-within:flex w-64 max-h-96 bg-soft-white p-2 absolute top-full translate-y-2 rounded-md shadow md:left-0 right-0 flex-col items-start gap-1 z-10">
-                        <div class="flex items-center bg-gray-200 rounded-lg text-gray-500 px-2">
+                        <form class="flex items-center bg-gray-200 rounded-lg text-gray-500 px-2">
                             <i class="bx bx-search text-gray-500 text-lg px-1"></i>
                             <input v-model="searchCategory" type="text" placeholder="Search category..."
                                 class="bg-transparent outline-none placeholder:font-medium font-medium w-full py-3 border-none text-sm placeholder:text-gray-500 text-primary" />
-                        </div>
+                        </form>
                         <div class="overflow-y-auto w-full">
                             <button type="button" @click="form.category = form.category === category.slug ? '' : category.slug" v-for="category in availableCategories" :key="category.slug" class="hover:bg-secondary p-3 w-full text-left flex items-center justify-between group/button">
                                 {{ category.name }}

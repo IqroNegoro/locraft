@@ -1,13 +1,13 @@
 <template>
     <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
         <div
-            class="w-full h-full md:max-w-2xl md:max-h-3/4 md:h-max md:rounded-lg overflow-hidden bg-soft-white relative max-md:flex flex-col">
-            <button @click="$emit('close')" class="absolute top-2 right-2 rounded-full bg-soft-white/50 z-10">
+            class="w-full h-full md:max-w-2xl md:max-h-3/4 md:h-max md:rounded-lg overflow-hidden bg-soft-white relative flex flex-col">
+            <button @click="$emit('close')" class="absolute top-2 right-2 rounded-full flex justify-center items-center p-1 bg-soft-white/50 z-10">
                 <i class="bx bx-x"></i>
             </button>
             <div
-                class="flex flex-col relative h-full md:max-h-full md:h-max md:flex-row w-full max-md:overflow-y-scroll">
-                <div class="md:w-3/5 max-md:h-max max-h-full overflow-y-auto relative bg-gray-100">
+                class="flex flex-col relative h-full md:max-h-full md:h-max md:flex-row w-full overflow-y-auto">
+                <div class="md:w-3/5 w-full max-md:h-max max-h-full overflow-y-auto relative bg-gray-100">
                     <Image v-if="product.images?.length" :src="product.images?.[imageIndex]?.image!" :alt="product.images?.[imageIndex]?.alt_text || ''"
                         class="w-full h-full" :key="product.images?.[imageIndex]?.image" />
                     <Image v-else :src="product.image" :alt="product.images?.[imageIndex]?.alt_text || ''"
