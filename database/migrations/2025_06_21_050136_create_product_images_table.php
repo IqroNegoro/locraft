@@ -15,9 +15,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('product_id')->references('id')->on('products')->cascadeOnDelete();
             $table->string('image');
-            $table->string('alt_text')->nullable();
-            $table->integer('order')->default(0);
-            $table->timestamps();
         });
     }
 

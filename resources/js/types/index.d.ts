@@ -57,6 +57,14 @@ export interface IUser {
 
     joined?: string;
 
+    instagram?: string | null;
+    tiktok?: string | null;
+    youtube?: string | null;
+    facebook?: string | null;
+    twitter?: string | null;
+    website?: string | null;
+    external_link?: string | null;
+
     followers_exists?: boolean
 }
 
@@ -82,7 +90,6 @@ export interface IProduct {
     image: string;
     likes: number;
     total_likes?: number | null;
-    views: number;
     link: string;
     created_at: string;
     updated_at: string;

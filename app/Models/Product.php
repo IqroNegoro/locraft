@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use App\Observers\ProductObserver;
+use App\Policies\ProductPolicy;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Attributes\UsePolicy;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -14,6 +16,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Auth;
 
 #[ObservedBy([ProductObserver::class])]
+#[UsePolicy(ProductPolicy::class)]
 class Product extends Model
 {
     /** @use HasFactory<\Database\Factories\ProductFactory> */
@@ -39,7 +42,7 @@ class Product extends Model
         return $this->hasMany(ProductImage::class);
     }
 
-    public function likes() : HasMany {
+    public function likesMany() : HasMany {
         return $this->hasMany(Like::class);
     }
 
@@ -53,7 +56,19 @@ class Product extends Model
 
     public function image() : Attribute {
         return Attribute::make(
-            get: fn($value) => $value ? asset('storage/images/products/' . $value) : ''
+            get: fn($value) => $value ? (str_starts_with($value, 'http') ? $value : asset('storage/images/products/' . $value)) : ''
+        );
+    }
+
+    public function likes() : Attribute {
+        return Attribute::make(
+            get: fn($value) => number_format($value, 0, ',', '.')
+        );
+    }
+
+    public function totalLikes() : Attribute {
+        return Attribute::make(
+            get: fn($value) => number_format($value, 0, ',', '.')
         );
     }
     

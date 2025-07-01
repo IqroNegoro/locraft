@@ -2,13 +2,13 @@
     <div class="min-h-screen font-inter bg-gray-50">
         <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div>
-                <button class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
+                <button class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
                     <i class='bx bx-arrow-back text-lg mr-2'></i>Back
                 </button>
                 <h1 class="text-3xl font-playfair font-bold text-primary pt-4">Edit Profile</h1>
             </div>
             <form 
-                class="rounded-lg border bg-card text-card-foreground shadow-sm mt-4"
+                class="rounded-lg border border-gray-200 shadow-sm mt-4"
                 @submit.prevent="router.post(route('user.update'), {
                     _method: 'put',
                     name: form.name,
@@ -17,6 +17,13 @@
                     avatar: form.avatar,
                     bio: form.bio,
                     location: form.location,
+                    instagram: form.instagram,
+                    tiktok: form.tiktok,
+                    youtube: form.youtube,
+                    facebook: form.facebook,
+                    twitter: form.twitter,
+                    website: form.website,
+                    external_link: form.external_link
                 })"
             >
                 <div class="flex flex-col gap-2 p-6">
@@ -42,7 +49,7 @@
                             <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="name">Full Name</label>
                             <input 
                                 v-model="form.name" 
-                                class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm" 
+                                class="flex h-10 w-full rounded-md border border-gray-200 bg-background px-3 py-2 text-base file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm" 
                                 id="name" 
                                 type="text"
                                 autocomplete="name"
@@ -53,7 +60,7 @@
                             <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="username">Username</label>
                             <input 
                                 v-model="form.username"
-                                class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm" 
+                                class="flex h-10 w-full rounded-md border border-gray-200 bg-background px-3 py-2 text-base file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm" 
                                 id="username" 
                                 type="text"
                                 autocomplete="username"
@@ -65,7 +72,7 @@
                         <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="bio">Bio</label>
                         <textarea 
                             v-model="form.bio"
-                            class="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" 
+                            class="flex min-h-[80px] w-full rounded-md border border-gray-200 bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50" 
                             id="bio" 
                             rows="3"
                         ></textarea>
@@ -75,7 +82,7 @@
                         <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="location">Location</label>
                         <input 
                             v-model="form.location"
-                            class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm" 
+                            class="flex h-10 w-full rounded-md border border-gray-200 bg-background px-3 py-2 text-base file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm" 
                             id="location" 
                             type="text"
                         >
@@ -90,7 +97,7 @@
                                     <i class='bx bx-globe text-xl text-gray-400'></i>
                                     <input 
                                         v-model="form.website"
-                                        class="flex-1 h-10 rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm" 
+                                        class="flex-1 h-10 rounded-md border border-gray-200 bg-background px-3 py-2 text-base file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm" 
                                         id="website" 
                                         placeholder="yourwebsite.com"
                                         type="text"
@@ -99,18 +106,61 @@
                                 <span v-if="$page.props.errors.website" class="text-xs text-red-500">{{ $page.props.errors.website }}</span>
                             </div>
                             <div class="flex flex-col gap-2">
+                                <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="external_link">External Link</label>
+                                <div class="flex items-center gap-2">
+                                    <i class='bx bx-link-external text-xl text-gray-400'></i>
+                                    <input 
+                                        v-model="form.external_link"
+                                        class="flex-1 h-10 rounded-md border border-gray-200 bg-background px-3 py-2 text-base file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm" 
+                                        id="external_link" 
+                                        placeholder="External Link"
+                                        type="text"
+                                    >
+                                </div>
+                                <span v-if="$page.props.errors.external_link" class="text-xs text-red-500">{{ $page.props.errors.external_link }}</span>
+                            </div>
+
+                            <div class="flex flex-col gap-2">
                                 <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="instagram">Instagram</label>
                                 <div class="flex items-center gap-2">
                                     <i class='bx bxl-instagram text-xl text-pink-500'></i>
                                     <input 
                                         v-model="form.instagram"
-                                        class="flex-1 h-10 rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm" 
+                                        class="flex-1 h-10 rounded-md border border-gray-200 bg-background px-3 py-2 text-base file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm" 
                                         id="instagram" 
-                                        placeholder="@username"
+                                        placeholder="instagram.com/@username"
                                         type="text"
                                     >
                                 </div>
                                 <span v-if="$page.props.errors.instagram" class="text-xs text-red-500">{{ $page.props.errors.instagram }}</span>
+                            </div>
+                            <div class="flex flex-col gap-2">
+                                <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="tiktok">TikTok</label>
+                                <div class="flex items-center gap-2">
+                                    <i class='bx bxl-tiktok text-xl text-black'></i>
+                                    <input 
+                                        v-model="form.tiktok"
+                                        class="flex-1 h-10 rounded-md border border-gray-200 bg-background px-3 py-2 text-base file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm" 
+                                        id="tiktok" 
+                                        placeholder="tiktok.com/@username"
+                                        type="text"
+                                    >
+                                </div>
+                                <span v-if="$page.props.errors.tiktok" class="text-xs text-red-500">{{ $page.props.errors.tiktok }}</span>
+                            </div>
+                            <div class="flex flex-col gap-2">
+                                <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="youtube">YouTube</label>
+                                <div class="flex items-center gap-2">
+                                    <i class='bx bxl-youtube text-xl text-red-600'></i>
+                                    <input 
+                                        v-model="form.youtube"
+                                        class="flex-1 h-10 rounded-md border border-gray-200 bg-background px-3 py-2 text-base file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm" 
+                                        id="youtube" 
+                                        placeholder="youtube.com/@channelname"
+                                        type="text"
+                                    >
+                                </div>
+                                <span v-if="$page.props.errors.youtube" class="text-xs text-red-500">{{ $page.props.errors.youtube }}</span>
                             </div>
                             <div class="flex flex-col gap-2">
                                 <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="facebook">Facebook</label>
@@ -118,9 +168,9 @@
                                     <i class='bx bxl-facebook text-xl text-blue-600'></i>
                                     <input 
                                         v-model="form.facebook"
-                                        class="flex-1 h-10 rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm" 
+                                        class="flex-1 h-10 rounded-md border border-gray-200 bg-background px-3 py-2 text-base file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm" 
                                         id="facebook" 
-                                        placeholder="facebook.username"
+                                        placeholder="facebook.com/username"
                                         type="text"
                                     >
                                 </div>
@@ -132,39 +182,25 @@
                                     <i class='bx bxl-twitter text-xl text-sky-400'></i>
                                     <input 
                                         v-model="form.twitter"
-                                        class="flex-1 h-10 rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm" 
+                                        class="flex-1 h-10 rounded-md border border-gray-200 bg-background px-3 py-2 text-base file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm" 
                                         id="twitter" 
-                                        placeholder="@username"
+                                        placeholder="twitter.com/@username"
                                         type="text"
                                     >
                                 </div>
                                 <span v-if="$page.props.errors.twitter" class="text-xs text-red-500">{{ $page.props.errors.twitter }}</span>
-                            </div>
-                            <div class="flex flex-col gap-2">
-                                <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="youtube">YouTube</label>
-                                <div class="flex items-center gap-2">
-                                    <i class='bx bxl-youtube text-xl text-red-600'></i>
-                                    <input 
-                                        v-model="form.youtube"
-                                        class="flex-1 h-10 rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm" 
-                                        id="youtube" 
-                                        placeholder="@channelname"
-                                        type="text"
-                                    >
-                                </div>
-                                <span v-if="$page.props.errors.youtube" class="text-xs text-red-500">{{ $page.props.errors.youtube }}</span>
                             </div>
                         </div>
                     </div>
                     <div class="flex justify-end gap-4 pt-6">
                         <button 
                             type="button"
-                            class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2"
+                            class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 border border-gray-200 bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2"
                             @click="form.reset()"
                         >Cancel</button>
                         <button 
                             type="submit"
-                            class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 text-primary-foreground h-10 px-4 py-2 bg-primary hover:bg-primary/90 text-white"
+                            class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 text-primary-foreground h-10 px-4 py-2 bg-primary hover:bg-primary/90 text-white"
                         >
                             <i class='bx bx-save text-lg mr-2'></i>Save Changes
                         </button>
@@ -187,16 +223,29 @@ const form = useForm<{
     email: string,
     avatar?: File | null,
     bio?: string,
-    location?: string
-
+    location?: string,
+    instagram?: string,
+    tiktok?: string,
+    youtube?: string,
+    facebook?: string,
+    twitter?: string,
+    website?: string,
+    external_link?: string
 }>({
     name: page.props.auth.user.name,
     username: page.props.auth.user.username,
     email: page.props.auth.user.email,
     avatar: null,
     bio: page.props.auth.user.bio,
-    location: page.props.auth.user.location
-})
+    location: page.props.auth.user.location,
+    instagram: page.props.auth.user.instagram,
+    tiktok: page.props.auth.user.tiktok,
+    youtube: page.props.auth.user.youtube,
+    facebook: page.props.auth.user.facebook,
+    twitter: page.props.auth.user.twitter,
+    website: page.props.auth.user.website,
+    external_link: page.props.auth.user.external_link
+});
 
 function handleAddImage(event: Event) {
     const input = event.target as HTMLInputElement;

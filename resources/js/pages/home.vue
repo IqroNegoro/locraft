@@ -2,10 +2,10 @@
     <div class="flex flex-col items-center justify-center w-full gap-16 bg-gray-50">
         <div class="flex flex-col items-center gap-8">
             <div class="text-xs text-gray-500 tracking-wider">
-                Product <span class="text-3xl mx-4 text-primary font-playfair">#1</span> of the day · {{ formatNumber(top_products[0]?.total_likes || 0) }} Total Likes
+                Product <span class="text-3xl mx-4 text-primary font-playfair">#1</span> of the day · {{ top_products[0]?.total_likes || 0 }} Total Likes
             </div>
             <div v-if="top_products.length" class="flex flex-col-reverse md:flex-row justify-between gap-4 w-full">
-                <div class="w-1/2 flex flex-col justify-center">
+                <div class="w-full md:w-1/2 flex flex-col justify-center">
                     <div class="flex items-center gap-2 mb-2">
                         <span class="bg-gray-100 text-xs px-2 py-1 rounded font-semibold text-gray-600">{{ top_products[0]?.category.name }}</span>
                         <span class="text-xs text-gray-400 flex items-center gap-1">
@@ -18,15 +18,11 @@
                         {{ top_products[0]?.sub }}
                     </p>
                     <div class="flex items-center gap-2 text-xs text-gray-500 mb-4">
-                        <span>by <span class="font-semibold text-gray-700">{{ top_products[0].user?.name }}</span></span>
+                        <span>by <Link :href="route('creators', top_products[0].user?.username)" class="font-semibold text-gray-700 hover:underline">{{ top_products[0].user?.name }}</Link></span>
                         <span class="mx-1">•</span>
                         <span class="flex items-center gap-1">
                             <i class="bx bx-heart text-red-400"></i> {{ top_products[0].likes }}
                         </span>
-                        <!-- <span class="mx-1">•</span>
-                        <span class="flex items-center gap-1">
-                            <i class="bx bx-show"></i> 9,840
-                        </span> -->
                     </div>
                     <div class="flex flex-wrap gap-2 mb-6">
                         <Tag v-for="tag in top_products[0].tags" :key="tag.id" :name="tag.name" />
@@ -40,14 +36,14 @@
                         </Link>
                     </div>
                 </div>
-                <div class="w-1/2 relative">
+                <div class="w-full md:w-1/2 relative">
                     <span
                         class="absolute -top-4 -left-4 bg-primary text-white rounded-full px-3 py-0.5 font-semibold flex items-center justify-center z-10 text-xl">1</span>
                     <img :src="top_products[0].image" :alt="top_products[0].name"
                         class="rounded-lg w-full md:w-4xl object-cover">
                 </div>
             </div>
-            <div class="flex-col gap-1">
+            <div v-else class="flex-col gap-1">
                 <span class="text-gray-500 text-sm">Oops, there is no product that we can show</span>
                 <h2 class="text-3xl font-bold text-center font-playfair mb-2">Can you be the one?</h2>
             </div>
@@ -70,11 +66,8 @@
                             <span class="text-gray-200 text-sm mb-3 drop-shadow">by {{ product.user!.name }}</span>
                             <div class="flex items-center gap-4 text-xs text-gray-200 mb-1">
                                 <span class="flex items-center gap-1">
-                                    <i class="bx bx-heart text-red-400"></i> {{ formatNumber(product.likes) }}
+                                    <i class="bx bx-heart text-red-400"></i> {{ product.likes }}
                                 </span>
-                                <!-- <span class="flex items-center gap-1">
-                                    <i class="bx bx-show"></i> 8,430
-                                </span> -->
                             </div>
                         </div>
                     </div>
@@ -87,7 +80,7 @@
                     </div>
                 </div>
             </div>
-            <div class="flex-col gap-1">
+            <div v-else class="flex-col gap-1">
                 <span class="text-gray-500 text-center block text-sm">Oops, there is no product that we can show</span>
                 <h2 class="text-3xl font-bold text-center font-playfair mb-2">Can you be the one?</h2>
             </div>
@@ -98,55 +91,8 @@
                 <p class="text-center text-gray-500 text-sm">Explore the finest products from our community of talented
                     creators</p>
             </div>
-            <div class="w-full flex flex-col md:flex-row md:gap-8">
-                <div class="md:sticky top-8 w-full max-w-96 h-max bg-soft-white rounded-xl shadow-sm p-6 mb-8">
-                    <h3 class="font-playfair text-xl font-bold mb-4">Filter Products</h3>
-                    <div class="mb-4">
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Category</label>
-                        <div class="flex flex-wrap gap-2">
-                            <button v-for="cat in ['', 'shoes', 'bags', 'clothing', 'accessories']" :key="cat"
-                                @click="selectedCategory = cat" :class="[
-                                    'px-3 py-1 rounded border text-sm font-semibold transition',
-                                    selectedCategory === cat
-                                        ? 'bg-primary text-white border-primary'
-                                        : 'bg-soft-white text-gray-700 border-gray-200 hover:bg-gray-100'
-                                ]" type="button">
-                                {{ cat === '' ? 'All Categories' : cat.charAt(0).toUpperCase() + cat.slice(1) }}
-                            </button>
-                        </div>
-                    </div>
-                    <div class="mb-4">
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Likes Range</label>
-                        <div class="flex flex-wrap gap-2">
-                            <button v-for="like in ['', '0-100', '101-500', '501-1000', '1000+']" :key="like"
-                                @click="selectedLikes = like" :class="[
-                                    'px-3 py-1 rounded border text-sm font-semibold transition',
-                                    selectedLikes === like
-                                        ? 'bg-primary text-white border-primary'
-                                        : 'bg-soft-white text-gray-700 border-gray-200 hover:bg-gray-100'
-                                ]" type="button">
-                                {{ like === '' ? 'Any Likes' : like }}
-                            </button>
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Date Added</label>
-                        <div class="flex flex-wrap gap-2">
-                            <button v-for="date in ['', 'Today', 'This Week', 'This Month', 'All Time']" :key="date"
-                                @click="selectedDate = date" :class="[
-                                    'px-3 py-1 rounded border text-sm font-semibold transition',
-                                    selectedDate === date
-                                        ? 'bg-primary text-white border-primary'
-                                        : 'bg-soft-white text-gray-700 border-gray-200 hover:bg-gray-100'
-                                ]" type="button">
-                                {{ date === '' ? 'All Time' : date }}
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="w-full grid grid-cols-1 md:grid-cols-3 grid-flow-row gap-4">
-                    <Latest v-for="product in random_products" :key="product.id" :product="product" />
-                </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 grid-flow-row md:gap-8">
+                <Latest v-for="product in random_products" :key="product.id" :product="product" />
             </div>
         </div>
         <div class="w-full flex flex-col gap-12">
@@ -168,19 +114,13 @@
 </template>
 <script setup lang="ts">
 import { IProduct } from '@/types';
-import { ref } from 'vue';
 import Latest from '@/components/Product/Latest.vue';
 import Tag from '@/components/Product/Tag.vue';
 import { Link } from '@inertiajs/vue3';
-import { formatNumber } from '@/lib/utils';
 
 defineProps<{
     top_products: IProduct[],
     latest_products: IProduct[]
     random_products: IProduct[]
 }>();
-
-const selectedCategory = ref();
-const selectedLikes = ref();
-const selectedDate = ref();
 </script>

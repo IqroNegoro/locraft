@@ -2,19 +2,15 @@
     <div class="w-full h-dvh overflow-x-hidden bg-gray-50">
         <nav class="w-full flex items-center justify-between px-6 py-2 border-b border-secondary bg-soft-white">
             <div class="flex items-center gap-8">
-                <Link :href="route('home')" class="font-bold text-xl text-primary font-playfair">Lokafest</Link>
+                <Link :href="route('home')" class="font-bold text-xl text-primary font-playfair">LoCraft</Link>
             </div>
             <div class="flex items-center gap-3">
                 <button @click="showSearch = true" class="flex items-center justify-center">
                     <i class="bx bx-search text-gray-500 text-lg"></i>
                 </button>
-                <div v-if="$page.props.auth.user" class="flex gap-4 group items-center relative group">
-                    <div>
-                        <i class="bx bx-bell text-gray-500 text-lg"></i>
-                    </div>
-                    <button class="flex items-center focus:outline-none"
-                        type="button">
-                        <Avatar :src="$page.props.auth.user.avatar" class="w-10 h-10" />
+                <div v-if="$page.props.auth?.user" class="flex gap-4 group items-center relative group">
+                    <button class="flex items-center focus:outline-none" type="button">
+                        <Avatar :src="$page.props.auth?.user?.avatar" class="w-10 h-10" />
                     </button>
                     <div
                         class="group-focus-within:block hidden absolute top-full right-0 mt-2 w-64 bg-soft-white rounded-lg shadow border border-gray-200 z-50">
@@ -22,15 +18,15 @@
                             <span class="font-semibold text-sm text-gray-800">Menu</span>
                         </div>
                         <div class="flex flex-col items-center justify-center text-gray-400 text-sm">
-                            <Link :href="route('creators', $page.props.auth.user.username)"
+                            <Link :href="route('creators', $page.props.auth?.user.username)"
                                 class="flex items-center gap-2 px-4 py-2 text-sm text-primary hover:bg-gray-50 w-full justify-start">
                             <i class="bx bx-user text-lg"></i>
                             Profile
                             </Link>
                             <Link :href="route('products.create')"
                                 class="flex items-center gap-2 px-4 py-2 text-sm text-primary hover:bg-gray-50 w-full justify-start md:hidden">
-                                <i class="bx bxs-cube-alt text-lg"></i>
-                                Submit Product
+                            <i class="bx bxs-cube-alt text-lg"></i>
+                            Submit Product
                             </Link>
                             <Link :href="route('user.setting')"
                                 class="flex items-center gap-2 px-4 py-2 text-sm text-primary hover:bg-gray-50 w-full justify-start">
@@ -50,9 +46,9 @@
                 <Link v-else :href="route('login')" class="flex items-center text-gray-500 p-1.5">
                 <i class="bx bx-user"></i>
                 </Link>
-                <Link :href="$page.props.auth.user ? route('products.create') : route('login')"
-                class="bg-primary text-white text-sm px-3 py-2 rounded transition max-md:hidden">
-                    Submit Product
+                <Link :href="$page.props.auth?.user ? route('products.create') : route('login')"
+                    class="bg-primary text-white text-sm px-3 py-2 rounded transition max-md:hidden">
+                Submit Product
                 </Link>
             </div>
         </nav>
@@ -67,7 +63,7 @@
             <div class="max-w-7xl mx-auto">
                 <div class="grid grid-cols-1 md:grid-cols-5 gap-8 border-b border-gray-700 pb-8">
                     <div class="md:col-span-1">
-                        <h2 class="font-playfair text-2xl font-bold mb-2">Lokafest</h2>
+                        <h2 class="font-playfair text-2xl font-bold mb-2">LoCraft</h2>
                         <p class="text-sm mb-4">Where creativity meets opportunity. Join thousands of creators
                             showcasing their unique products and building their brands on our platform.</p>
                         <div class="flex space-x-3 mt-2">
@@ -133,7 +129,7 @@
                 <div
                     class="flex flex-col md:flex-row md:items-center md:justify-between border-t border-gray-800 pt-6 mt-6 text-xs text-gray-400 gap-2">
                     <div>
-                        © {{ new Date().getFullYear() }} Lokafest. All rights reserved.
+                        © {{ new Date().getFullYear() }} LoCraft. All rights reserved.
                     </div>
                     <div class="flex space-x-4">
                         <a href="#" class="hover:underline">Privacy</a>
@@ -163,10 +159,12 @@
 <script setup lang="ts">
 import Avatar from '@/components/Avatar.vue';
 import Search from '@/components/Search.vue';
-import { Link, router } from '@inertiajs/vue3';
-import { ref } from 'vue';
+import { Link, router, usePage } from '@inertiajs/vue3';
+import { ref, watch } from 'vue';
 
 const showSearch = ref<boolean>(false);
+
+watch(() => usePage().url, () => showSearch.value = false)
 
 </script>
 <style scoped>

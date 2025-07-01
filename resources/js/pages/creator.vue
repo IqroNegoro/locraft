@@ -1,4 +1,28 @@
 <template>
+
+    <Head>
+        <title>{{ user.name }}</title>
+        <meta name="description"
+            :content="user.bio ? user.bio : 'Profil kreator lokal di LoCraft. Temukan karya dan produk terbaik dari ' + user.name + ' hanya di LoCraft!'" />
+        <meta name="keywords"
+            :content="user.name + ', ' + user.username + ', LoCraft, kreator lokal, produk lokal, profil kreator'" />
+        <meta name="author" :content="user.name" />
+        <meta name="robots" content="index, follow" />
+        <meta property="og:title" :content="user.name + ' - Profile | LoCraft'" />
+        <meta property="og:description"
+            :content="user.bio ? user.bio : 'Profil kreator lokal di LoCraft. Temukan karya dan produk terbaik dari ' + user.name + ' hanya di LoCraft!'" />
+        <meta property="og:image" :content="user.avatar!" />
+        <meta property="og:type" content="profile" />
+        <meta property="og:url" :content="$page.props.ziggy.location" />
+        <meta property="og:site_name" content="LoCraft" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" :content="user.name + ' - Profile | LoCraft'" />
+        <meta name="twitter:description"
+            :content="user.bio ? user.bio : 'Profil kreator lokal di LoCraft. Temukan karya dan produk terbaik dari ' + user.name + ' hanya di LoCraft!'" />
+        <meta name="twitter:image" :content="user.avatar!" />
+        <meta name="twitter:site" content="@LoCraftid" />
+    </Head>
+
     <div>
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div class="bg-soft-white rounded-2xl shadow-lg p-8 mb-8">
@@ -16,14 +40,12 @@
                                 <span class="text-gray-700 my-4 leading-relaxed">{{ user.bio }}</span>
                             </div>
                             <div v-if="$page.props.auth?.user?.id !== user.id" class="flex gap-3">
-                                <button @click="router.put(route('creators.follow', user.username), {}, {
+                                <button @click="$page.props.auth?.user ? router.put(route('creators.follow', user.username), {}, {
                                     only: ['user']
-                                })"
+                                }) : router.get(route('login'))"
                                     class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 bg-primary hover:bg-primary/90 h-10 px-4 py-2 bg-gradient-to-r from-primary to-gray-800 hover:from-gray-800 hover:to-primary text-white">
                                     {{ user!.followers ? 'Following' : 'Follow' }}
                                 </button>
-                                <button
-                                    class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 border bg-background h-10 px-4 py-2 border-primary text-primary hover:bg-primary hover:text-white">Message</button>
                             </div>
                         </div>
                         <div class="flex gap-8 mb-6">
@@ -51,45 +73,55 @@
                             </div>
                         </div>
                         <div class="flex flex-wrap gap-4">
-                            <a href="https://instagram.com/sarahcreates_" target="_blank" rel="noopener noreferrer"
+                            <a v-if="user.instagram" :href="`https://instagram.com/${user.instagram.replace('@', '')}`"
+                                target="_blank" rel="noopener noreferrer"
                                 class="flex items-center gap-2 bg-gray-200 py-2 px-4 rounded-full text-primary hover:text-gray-800 transition-colors">
                                 <i class='bx bxl-instagram text-lg'></i>
-                                <span class="text-sm font-medium">@sarahcreates_</span>
+                                <span class="text-sm font-medium">@{{ user.instagram }}</span>
                             </a>
-                            <a href="https://twitter.com/sarahcreates_" target="_blank" rel="noopener noreferrer"
+                            <a v-if="user.twitter" :href="`https://twitter.com/${user.twitter.replace('@', '')}`"
+                                target="_blank" rel="noopener noreferrer"
                                 class="flex items-center gap-2 bg-gray-200 py-2 px-4 rounded-full text-primary hover:text-gray-800 transition-colors">
                                 <i class='bx bxl-twitter text-lg'></i>
-                                <span class="text-sm font-medium">@sarahcreates_</span>
+                                <span class="text-sm font-medium">@{{ user.twitter }}</span>
                             </a>
-                            <a href="https://facebook.com/sarahcreates" target="_blank" rel="noopener noreferrer"
+                            <a v-if="user.facebook" :href="`https://facebook.com/${user.facebook}`" target="_blank"
+                                rel="noopener noreferrer"
                                 class="flex items-center gap-2 bg-gray-200 py-2 px-4 rounded-full text-primary hover:text-gray-800 transition-colors">
                                 <i class='bx bxl-facebook text-lg'></i>
-                                <span class="text-sm font-medium">Sarah Creates</span>
+                                <span class="text-sm font-medium">{{ user.facebook }}</span>
                             </a>
-                            <a href="https://pinterest.com/sarahcreates" target="_blank" rel="noopener noreferrer"
+                            <a v-if="user.tiktok" :href="`https://tiktok.com/@${user.tiktok.replace('@', '')}`"
+                                target="_blank" rel="noopener noreferrer"
                                 class="flex items-center gap-2 bg-gray-200 py-2 px-4 rounded-full text-primary hover:text-gray-800 transition-colors">
-                                <i class='bx bxl-pinterest text-lg'></i>
-                                <span class="text-sm font-medium">SarahCreates</span>
+                                <i class='bx bxl-tiktok text-lg'></i>
+                                <span class="text-sm font-medium">@{{ user.tiktok }}</span>
                             </a>
-                            <a href="mailto:sarahcreates@email.com" target="_blank" rel="noopener noreferrer"
+                            <a v-if="user.youtube" :href="`https://youtube.com/@${user.youtube.replace('@', '')}`"
+                                target="_blank" rel="noopener noreferrer"
+                                class="flex items-center gap-2 bg-gray-200 py-2 px-4 rounded-full text-primary hover:text-gray-800 transition-colors">
+                                <i class='bx bxl-youtube text-lg'></i>
+                                <span class="text-sm font-medium">{{ user.youtube }}</span>
+                            </a>
+                            <a v-if="user.email" :href="`mailto:${user.email}`" target="_blank"
+                                rel="noopener noreferrer"
                                 class="flex items-center gap-2 bg-gray-200 py-2 px-4 rounded-full text-primary hover:text-gray-800 transition-colors">
                                 <i class='bx bx-envelope text-lg'></i>
                                 <span class="text-sm font-medium">Email</span>
                             </a>
-                            <a href="https://sarahcreates.com" target="_blank" rel="noopener noreferrer"
+                            <a v-if="user.website"
+                                :href="user.website.startsWith('http') ? user.website : `https://${user.website}`"
+                                target="_blank" rel="noopener noreferrer"
                                 class="flex items-center gap-2 bg-gray-200 py-2 px-4 rounded-full text-primary hover:text-gray-800 transition-colors">
                                 <i class='bx bx-globe text-lg'></i>
-                                <span class="text-sm font-medium">sarahcreates.com</span>
+                                <span class="text-sm font-medium">{{ user.website.replace(/^https?:\/\//, '') }}</span>
                             </a>
-                            <a href="https://sarahcreates.com" target="_blank" rel="noopener noreferrer"
+                            <a v-if="user.external_link"
+                                :href="user.external_link.startsWith('http') ? user.external_link : `https://${user.external_link}`"
+                                target="_blank" rel="noopener noreferrer"
                                 class="flex items-center gap-2 bg-gray-200 py-2 px-4 rounded-full text-primary hover:text-gray-800 transition-colors">
                                 <i class='bx bx-link-external text-lg'></i>
                                 <span class="text-sm font-medium">External Link</span>
-                            </a>
-                            <a href="https://youtube.com/@SarahCreatesChannel" target="_blank" rel="noopener noreferrer"
-                                class="flex items-center gap-2 bg-gray-200 py-2 px-4 rounded-full text-primary hover:text-gray-800 transition-colors">
-                                <i class='bx bxl-youtube text-lg'></i>
-                                <span class="text-sm font-medium">SarahCreatesChannel</span>
                             </a>
                         </div>
                     </div>
@@ -106,15 +138,11 @@
                     <div class="opacity-0 group-hover:opacity-100 transition-opacity text-white text-center w-full">
                         <div class="flex items-center justify-center gap-4 mb-2">
                             <button @click.stop.prevent="router.put(route('products.like', product.slug))"
-                                class="flex items-center gap-1">
+                                class="flex justify-center items-center gap-1">
                                 <i class="bx"
                                     :class="{ 'bxs-heart': product.liked_exists, 'bx-heart': !product.liked_exists }"></i>
                                 <span>{{ product.likes }}</span>
                             </button>
-                            <div class="flex items-center gap-1">
-                                <i class="bx bx-show"></i>
-                                <span>{{ product.views }}</span>
-                            </div>
                         </div>
                         <p class="text-sm font-medium">{{ product.name }}</p>
                     </div>
@@ -131,99 +159,12 @@
         </div>
 
         <ProductModal v-if="showModal && product" :product="product" :user="user" @close="showModal = false" />
-
-        <!-- <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-            <div class="w-full h-full md:max-w-2xl md:max-h-3/4 md:h-max md:rounded-lg overflow-hidden bg-soft-white relative max-md:flex flex-col">
-                <button @click="$emit('close')" class="absolute top-2 right-2 rounded-full bg-soft-white/50 z-10">
-                    <i class="bx bx-x"></i>
-                </button>
-                <div class="flex flex-col relative h-full md:max-h-full md:h-max md:flex-row w-full max-md:overflow-y-scroll">
-                    <div class="md:w-1/2 max-md:h-max border h-full relative bg-gray-100">
-                        <img :src="product.images?.[imageIndex]?.image" :alt="product.images?.[imageIndex]?.alt_text || ''"
-                            class="w-full " />
-                        <button v-if="product.images?.length && imageIndex != 0" @click="imageIndex--"
-                            class="absolute top-1/2 -translate-y-1/2 left-2 p-2 flex justify-center items-center bg-soft-white/75 rounded-full"
-                            aria-label="Sebelumnya">
-                            <i class="bx bx-chevron-left text-2xl"></i>
-                        </button>
-                        <button v-if="product.images && imageIndex < product.images.length - 1" @click="imageIndex++"
-                            class="absolute top-1/2 -translate-y-1/2 right-2 p-2 flex justify-center items-center bg-soft-white/75 rounded-full"
-                            aria-label="Selanjutnya">
-                            <i class="bx bx-chevron-right text-2xl"></i>
-                        </button>
-                        <div v-if="product.images?.length && product.images?.length > 1" class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 justify-center">
-                            <button class="w-2 h-2 rounded-full transition-all bg-gray-300" v-for="i in product.images.length" :key="i" @click="imageIndex = i - 1" :class="{'bg-primary scale-125': imageIndex + 1 === i}"></button>
-                        </div>
-                    </div>
-        
-                    <div class="md:w-1/2 flex flex-col justify-between p-4 mt-3">
-                        <div class="flex flex-col gap-4">
-                            <div class="flex items-center justify-between gap-8">
-                                <div class="flex gap-2 min-w-0">
-                                    <Link :href="route('creators', user.username)">
-                                        <Avatar :src="user.avatar!" class="w-12 h-12 shrink-0" />
-                                    </Link>
-                                    <div class="min-w-0 flex flex-col">
-                                        <Link :href="route('creators', user.username)" class="text-lg hover:underline">{{ user.name }}</Link>
-                                        <span class="text-gray-500 truncate text-xs">{{ user.bio }}</span>
-                                    </div>
-                                </div>
-                                <span class="bg-primary text-white rounded-full w-max h-max py-1 px-4 flex justify-center items-center text-xs font-light">{{product.category.name }}</span>
-                            </div>
-                            <h2 class="font-playfair text-3xl">{{ product?.name }}</h2>
-                            <div class="flex gap-6 items-center">
-                                <div class="flex gap-1 items-center">
-                                    <span class="bg-red-100 text-red-800 p-1 rounded-full">
-                                        <i class="bx bxs-heart"></i>
-                                    </span>
-                                    <span>{{ product?.likes }}</span>
-                                </div>
-                                <span class="text-gray-500 text-xs">{{ product.created_at }}</span>
-                            </div>
-                            <p class="text-gray-600 text-sm ">
-                                {{ product.sub }}
-                            </p>
-                        </div>
-                        <div class="max-md:hidden w-full flex gap-2">
-                            <button @click="router.put(route('products.like', product.slug))" class="flex gap-2 justify-center items-center bg-primary rounded w-full text-white py-2">
-                                <i class="bx" :class="{'bxs-heart': product.liked_exists, 'bx-heart': !product.liked_exists}"></i>
-                                {{ product.liked_exists ? 'Liked' : 'Like' }}
-                            </button>
-                            <button class="bg-gray-200 px-4">
-                                <i class="bx bx-share-alt"></i>
-                            </button>
-                            <button class="bg-gray-200 px-4">
-                                <i class="bx bx-bookmark"></i>
-                            </button>
-                            <Link :href="route('products.show', product.slug)" class="bg-gray-200 px-4 flex justify-center items-center">
-                                <i class="bx bx-link-external"></i>
-                            </Link>
-                        </div>
-                    </div>
-                </div>
-                <div class="md:hidden w-full flex gap-2 p-4">
-                    <button @click="router.put(route('products.like', product.slug))" class="flex gap-2 justify-center items-center bg-primary rounded w-full text-white py-2">
-                        <i class="bx" :class="{'bxs-heart': product.liked_exists, 'bx-heart': !product.liked_exists}"></i>
-                        {{ product.liked_exists ? 'Liked' : 'Like' }}
-                    </button>
-                    <button class="bg-gray-200 px-4">
-                        <i class="bx bx-share-alt"></i>
-                    </button>
-                    <button class="bg-gray-200 px-4">
-                        <i class="bx bx-bookmark"></i>
-                    </button>
-                    <Link :href="route('products.show', product.slug)" class="bg-gray-200 px-4 flex justify-center items-center">
-                        <i class="bx bx-link-external"></i>
-                    </Link>
-                </div>
-            </div>
-        </div> -->
     </div>
 </template>
 <script setup lang="ts">
 import ProductModal from '@/components/Product/Modal.vue'
 import Avatar from '@/components/Avatar.vue'
-import { Link, router } from '@inertiajs/vue3';
+import { Head, Link, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import { IProduct, IUser } from '@/types';
 

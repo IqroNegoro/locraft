@@ -24,7 +24,7 @@ class StoreReviewRequest extends FormRequest
     {
         return [
             'rating' => 'required|integer|min:1|max:5',
-            'review' => 'required|string',
+            'review' => 'required|string|max:5000',
         ];
     }
 }

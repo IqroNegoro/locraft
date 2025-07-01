@@ -38,7 +38,7 @@ class UserController extends Controller
             ])) {
                 $request->session()->regenerate();
 
-                return redirect()->route('creators', Auth::user()->username)->with('success', 'Registration success, welcome to lokafest!');
+                return redirect()->route('creators', Auth::user()->username)->with('success', 'Registration success, welcome to LoCraft!');
             } else {
                 return back()->with('error', 'Email or password wrong!');
             }
@@ -130,9 +130,9 @@ class UserController extends Controller
                 $data['avatar'] = basename($path);
                 $avatar = basename($path);
             }
-            
+
             $user->update($data);
-            
+
             if ($request->hasFile('avatar') && $user->avatar && Storage::disk('public')->exists('images/avatar/' . $user->avatar)) {
                 Storage::disk('public')->delete('images/avatar/' . $user->avatar);
             }
@@ -176,15 +176,16 @@ class UserController extends Controller
         }
     }
 
-    public function search(Request $request) {
+    public function search(Request $request)
+    {
         try {
             $query = $request->input('q');
 
-            $users = Product::when($query, function($query) {
+            $users = Product::when($query, function ($query) {
                 return $query->where('name', 'like', '%' . $query . '%');
             })
-            ->limit(10)
-            ->get();
+                ->limit(10)
+                ->get();
 
             return response()->json([
                 'data' => $users

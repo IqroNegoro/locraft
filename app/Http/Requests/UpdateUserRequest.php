@@ -24,11 +24,20 @@ class UpdateUserRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'username' => 'required|string|max:255|alpha_dash|unique:users,username,' . Auth::user()->id,
+            'username' => 'required|string|max:255|alpha|unique:users,username,' . Auth::user()->id,
             'email' => 'sometimes|email|max:255',
             'avatar' => 'exclude_if:avatar,null|image|max:2048',
             'bio' => 'nullable|string|max:500',
             'location' => 'nullable|string|max:255',
+
+            'instagram' => 'nullable|string|max:255',
+            'tiktok' => 'nullable|string|max:255',
+            'youtube' => 'nullable|string|max:255',
+            'facebook' => 'nullable|string|max:255',
+            'twitter' => 'nullable|string|max:255',
+            'linkedin' => 'nullable|string|max:255',
+            'website' => 'nullable|string|max:255',
+            'external_link' => 'nullable|string|max:255',
         ];
     }
 }

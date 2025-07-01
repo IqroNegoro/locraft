@@ -6,5 +6,3 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const render = (file: File) => URL.createObjectURL(file);
-
-export const formatNumber = (num: number | string): string => new Intl.NumberFormat('id-ID').format(Number(num));

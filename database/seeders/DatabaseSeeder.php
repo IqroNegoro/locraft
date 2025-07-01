@@ -14,55 +14,51 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call([
-            CategorySeeder::class
-        ]);
-
-    User::insert([
+        User::insert([
         [
             'name' => 'Irene',
-            'username' => 'irene.iberia',
+            'username' => 'ireneiberia',
             'email' => 'irene@gmail.com',
             'email_verified_at' => now(),
             'role' => 'user',
             'password' => bcrypt('irene123'),
             'avatar' => 'https://images4.alphacoders.com/123/1234367.jpg',
-            'bio' => 'Lantern ward!',
+            'bio' => 'Your finest inquisitor who fighting with custom handmade gun and knife',
             'location' => 'Rhodes Island',
             'followers' => 0,
-            'products' => 0,
+            'products' => 2,
             'following' => 0,
             'created_at' => now(),
             'updated_at' => now(),
         ],
         [
-            'name' => 'Ichika Hoshino',
-            'username' => 'ichika.hoshino',
-            'email' => 'ichikahoshino@gmail.com',
+            'name' => 'WoodMade',
+            'username' => 'woodmade',
+            'email' => 'woodmade@gmail.com',
             'email_verified_at' => now(),
             'role' => 'user',
-            'password' => bcrypt('ichika123'),
-            'avatar' => 'https://images3.alphacoders.com/124/1242949.jpg',
-            'bio' => 'Vocalist dari Leo/need! Musik adalah hidupku~',
-            'location' => 'Sekai',
+            'password' => bcrypt('woodmade123'),
+            'avatar' => 'https://cdn.webshopapp.com/shops/255731/files/379384509/red-oak.jpg',
+            'bio' => 'Would you would wood ? yes, i am wood',
+            'location' => 'S5Jungle',
             'followers' => 0,
-            'products' => 0,
+            'products' => 5,
             'following' => 0,
             'created_at' => now(),
             'updated_at' => now(),
         ],
         [
             'name' => 'Kaguya Shinomiya',
-            'username' => 'kaguya.shinomiya',
-            'email' => 'kaguya.shinomiya@gmail.com',
+            'username' => 'kaguyashinomiya',
+            'email' => 'kaguyashinomiya@gmail.com',
             'email_verified_at' => now(),
             'role' => 'user',
             'password' => bcrypt('kaguya123'),
-            'avatar' => 'https://imagedelivery.net/LBWXYQ-XnKSYxbZ-NuYGqQ/fd2df734-3132-4d31-b06f-c5eb49e6be00/avatarhd',
-            'bio' => 'Love is war!',
+            'avatar' => 'https://images6.alphacoders.com/100/thumb-1920-1006132.png',
+            'bio' => 'In trade, whoever buy first then they win!',
             'location' => 'Shuchiin Academy',
             'followers' => 0,
-            'products' => 0,
+            'products' => 3,
             'following' => 0,
             'created_at' => now(),
             'updated_at' => now(),
@@ -83,6 +79,14 @@ class DatabaseSeeder extends Seeder
             'created_at' => now(),
             'updated_at' => now(),
         ]
+    ]);
+
+    $this->call([
+        CategorySeeder::class,
+        TagSeeder::class,
+        ProductSeeder::class,
+        ProductImageSeeder::class,
+        TagProductSeeder::class
     ]);
     }
 }

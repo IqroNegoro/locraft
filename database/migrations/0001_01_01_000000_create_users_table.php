@@ -25,6 +25,19 @@ return new class extends Migration
             $table->integer('followers')->default(0);
             $table->integer('products')->default(0);
             $table->integer('following')->default(0);
+
+            $table->string('instagram')->nullable();
+            $table->string('tiktok')->nullable();
+            $table->string('youtube')->nullable();
+            $table->string('facebook')->nullable();
+            $table->string('twitter')->nullable();
+            $table->string('website')->nullable();
+            $table->string('external_link')->nullable();
+
+            $table->boolean('is_banned')->default(false);
+            $table->timestamp('banned_at')->nullable();
+            $table->string('banned_reason')->nullable();
+
             $table->rememberToken();
             $table->timestamps();
         });

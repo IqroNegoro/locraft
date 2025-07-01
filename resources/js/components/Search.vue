@@ -1,15 +1,17 @@
 <template>
     <div v-show="show" class="fixed top-0 left-0 w-full h-full bg-black/50 z-50 flex justify-center items-center">
         <Transition name="fade" mode="in-out" appear>
-            <div v-if="show" class="bg-secondary w-full md:w-3/4 h-full md:min-h-96 md:max-h-3/4 flex flex-col gap-2 md:rounded-lg p-4">
+            <div v-if="show"
+                class="bg-secondary w-full md:w-3/4 h-full md:min-h-96 md:max-h-3/4 flex flex-col gap-2 md:rounded-lg p-4">
                 <div class="relative flex items-center justify-between">
-                    <Link :href="route('home')" class="font-bold text-xl text-primary font-playfair">Lokafest</Link>
+                    <Link :href="route('home')" class="font-bold text-xl text-primary font-playfair">LoCraft</Link>
                     <div class="flex gap-2 items-center">
                         <Avatar v-if="$page.props.auth.user" :src="$page.props.auth.user.avatar" class="w-8 h-8" />
                         <Link v-else :href="route('login')" class="flex items-center rounded-full bg-soft-white p-2">
                         <i class="bx bx-log-in"></i>
                         </Link>
-                        <button @click="emit('close')" class="hover:bg-soft-white rounded-full p-2 flex justify-center items-center">
+                        <button @click="emit('close')"
+                            class="hover:bg-soft-white rounded-full p-2 flex justify-center items-center">
                             <i class="bx bx-x"></i>
                         </button>
                     </div>
@@ -47,7 +49,8 @@
                                     </span>
                                     </Link>
                                 </div>
-                                <div v-else class="text-xs text-gray-400">Oops, maybe you the first who can make it!</div>
+                                <div v-else class="text-xs text-gray-400">Oops, maybe you the first who can make it!
+                                </div>
                             </div>
                             <div>
                                 <div class="flex justify-between">
@@ -58,14 +61,15 @@
                                     </Link>
                                 </div>
                                 <div v-if="categories && categories.length">
-                                    <Link :href="route('search', {category: category.slug})" v-for="category in categories" :key="category.id"
+                                    <Link :href="route('search', { category: category.slug })"
+                                        v-for="category in categories" :key="category.id"
                                         class="rounded p-2 flex justify-between w-full text-sm hover:bg-soft-white font-light">
-                                        <span>
-                                            {{ category.name }}
-                                        </span>
-                                        <span>
-                                            {{ category.products_count || '' }}
-                                        </span>
+                                    <span>
+                                        {{ category.name }}
+                                    </span>
+                                    <span>
+                                        {{ category.products_count || '' }}
+                                    </span>
                                     </Link>
                                 </div>
                                 <div v-else class="text-xs text-gray-400">Unique Categories!</div>
@@ -98,7 +102,8 @@
                                     Categories
                                 </span>
                             </button>
-                            <button @click="tab = 'likes'" class="p-2 flex gap-2 rounded"
+                            <button @click="tab = 'likes'"
+                                class="p-2 flex gap-2 rounded flex items-center justify-center"
                                 :class="{ 'bg-soft-white': tab === 'likes' }">
                                 <i class="bx bxs-heart text-xl"></i>
                                 <span class="text-sm font-medium max-md:hidden">
@@ -116,14 +121,15 @@
                                 See More <i class="bx bx-right-arrow-alt"></i>
                                 </Link>
                                 <template v-if="tab === 'categories'">
-                                    <Link :href="route('search', {category: category.slug})" v-for="category in categories" :key="category.id"
+                                    <Link :href="route('search', { category: category.slug })"
+                                        v-for="category in categories" :key="category.id"
                                         class="rounded p-2 flex justify-between w-full text-sm hover:bg-soft-white transition font-light">
-                                        <span>
-                                            {{ category.name }}
-                                        </span>
-                                        <span>
-                                            {{ category.products_count || '' }}
-                                        </span>
+                                    <span>
+                                        {{ category.name }}
+                                    </span>
+                                    <span>
+                                        {{ category.products_count || '' }}
+                                    </span>
                                     </Link>
                                 </template>
                                 <template v-else-if="tab === 'likes'">

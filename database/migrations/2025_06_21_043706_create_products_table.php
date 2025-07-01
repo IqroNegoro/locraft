@@ -9,6 +9,8 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
+    //check image ke delete apa engga pas delete products
+    //lagi di products page admin
     public function up(): void
     {
         Schema::create('products', function (Blueprint $table) {
@@ -22,8 +24,7 @@ return new class extends Migration
             $table->string('image');
             $table->integer('likes')->default(0);
             $table->integer('total_likes')->nullable();
-            $table->integer('views')->default(0);
-            $table->string('link')->default(0);
+            $table->string('link')->nullable();
             $table->timestamps();
         });
     }

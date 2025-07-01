@@ -4,7 +4,7 @@
             v-if="showImg"
             :src="src"
             :alt="alt"
-            class="w-full"
+            class="w-full h-full object-cover"
             @error="showImg = false"
         />
     </div>

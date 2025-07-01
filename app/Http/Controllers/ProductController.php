@@ -67,6 +67,7 @@ class ProductController extends Controller
                     'category_id' => $validated['category_id'],
                     'story' => $validated['story'],
                     'image' => $thumbnail,
+                    'link' => $validated['link']
                 ]);
                 \App\Models\ProductImage::insert(array_map(function($image) use ($product) {
                     return [
@@ -112,7 +113,7 @@ class ProductController extends Controller
                 'user' => function($query) {
                     return $query->withExists('followers');
                 }, 
-            ])->loadExists('likes'),
+            ])->loadExists('liked'),
             'ratings' => $product->reviews()
                 ->selectRaw('rating, COUNT(*) as total')
                 ->groupBy('rating')
@@ -126,7 +127,11 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        //
+        return Inertia::render('edit_product', [
+            'product' => $product->load(['category', 'tags', 'images']),
+            'categories' => Category::latest()->take(20)->get(),
+            'tags' => Tag::latest()->take(20)->get()
+        ]);
     }
 
     /**
@@ -146,17 +151,18 @@ class ProductController extends Controller
             if (!Auth::check()) abort(403);
 
             if (Auth::user()->role === 'admin' || Auth::user()->id === $product->user_id) {
-                $images = $product->images();
-
-                foreach ($images as $image) {
-                    if (Storage::disk('public')->exists('images/products/' . $image->image)) {
-                        Storage::disk('public')->delete('images/products/' . $image->image);
+                $product->images()->each(function($image) {
+                    $basename = basename($image->image);
+                    if (Storage::disk('public')->exists('images/products/' . $basename)) {
+                        Storage::disk('public')->delete('images/products/' . $basename);
                     }
-                }
-                
+                });
+
                 $product->delete();
+                return back()->with('success', 'Product deleted');
+            } else {
+                abort(403);
             }
-            return back()->with('success', 'Product deleted');
         } catch (\Throwable $e) {
             return $e;
             return back()->with('error', 'Failed to delete product');
@@ -182,7 +188,6 @@ class ProductController extends Controller
                 return back()->with('success', 'Product liked');
             }
         } catch (\Throwable $e) {
-            return $e;
             return back()->with('error', 'Failed to like product, try again');
         }
     }
@@ -193,9 +198,8 @@ class ProductController extends Controller
 
             $products = Product::when($query, function($query) {
                 return $query->where('name', 'like', '%' . $query . '%');
-            }, function($query) {
-                return $query->whereToday('created_at');
             })
+            ->inRandomOrder()
             ->orderBy('likes', 'desc')
             ->limit(10)
             ->get();

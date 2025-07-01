@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-soft-white rounded-2xl h-max shadow p-0 overflow-hidden max-w-xs w-full">
+    <div class="bg-soft-white rounded-2xl shadow overflow-hidden w-full">
         <div class="relative">
             <img :src="product.image" :alt="product.name" class="w-full h-56 aspect-square object-cover" />
             <span
@@ -23,7 +23,7 @@
             <div class="flex items-center justify-between">
                 <div class="flex gap-4 text-sm text-gray-700">
                     <div class="flex gap-1 items-center">
-                        <span class="bg-red-100 text-red-800 p-1 rounded-full">
+                        <span class="bg-red-100 text-red-800 flex items-center justify-center p-1 rounded-full">
                             <i class="bx bxs-heart"></i>
                         </span>
                         <span>{{ product?.likes }}</span>

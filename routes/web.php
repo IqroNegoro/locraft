@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\LikeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ReviewController;
@@ -10,6 +9,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Middleware\Admin;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Report;
+use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -17,7 +18,11 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', function () {
-    return Inertia::render('index');
+    return Inertia::render('index', [
+        'top_products' => Product::with('user', 'category', 'tags')->whereBetween('created_at', [
+            now()->subWeek()->startOfWeek(), now()->subWeek()->endOfWeek()
+        ])->whereNotNull('total_likes')->orderBy('total_likes', 'desc')->take(3)->get(),
+    ]);
 })->name('landing-page');
 
 Route::middleware('guest')->group(function() {
@@ -26,32 +31,38 @@ Route::middleware('guest')->group(function() {
     
     Route::get('login', [UserController::class, 'login'])->name('login');
     Route::post('login', [UserController::class, 'loginPost'])->name('login.post');
-    
 });
 
-Route::delete('logout', [UserController::class, 'logout'])->name('logout')->middleware('auth');
-
 Route::get('home', function () {
-    $product = Product::with('user', 'category', 'tags');
     return Inertia::render('home', [
-        'top_products' => $product->whereDate('created_at', now()->yesterday())->orderBy('total_likes', 'desc')->take(10)->get(),
-        'latest_products' => $product->latest()->take(20)->get(),
-        'random_products' => $product->inRandomOrder()->get()
+        'top_products' => Product::with('user', 'category', 'tags')->whereDate('created_at', now()->yesterday())->whereNotNull('total_likes')->orderBy('total_likes', 'desc')->take(10)->get(),
+        'latest_products' => Product::with('user', 'category', 'tags')->latest()->take(9)->get(),
+        'random_products' => Product::with('user', 'category', 'tags')->inRandomOrder()->take(9)->get()
     ]);
 })->name('home');
 
-Route::get('setting', [UserController::class, 'edit'])->name('user.setting');
-Route::put('setting', [UserController::class, 'update'])->name('user.update');
+Route::middleware('auth')->group(function() {
+    Route::get('setting', [UserController::class, 'edit'])->name('user.setting');
+    Route::put('setting', [UserController::class, 'update'])->name('user.update');
+
+    Route::put('creators/{user:username}/follow', [UserController::class, 'follow'])->name('creators.follow');
+    Route::put('products/{product:slug}/like', [ProductController::class, 'like'])->name('products.like');
+    Route::post('products/{product:slug}/review', [ReviewController::class, 'store'])->name('products.review');
+    Route::get('products/{product:slug}/edit', [ProductController::class, 'edit'])->name('products.edit');
+    Route::delete('products/{product:slug}', [ProductController::class, 'destroy'])->name('products.destroy');
+
+    Route::get('upload', [ProductController::class, 'create'])->name('products.create');
+    Route::post('upload', [ProductController::class, 'store'])->name('products.store');
+
+    Route::post('reports', [ReportController::class, 'store'])->name('reports.store');
+
+    Route::delete('logout', [UserController::class, 'logout'])->name('logout')->middleware('auth');
+});
+
 
 Route::get('products/{product:slug}', [ProductController::class, 'show'])->name('products.show');
-Route::put('products/{product:slug}/like', [ProductController::class, 'like'])->name('products.like');
-Route::post('products/{product:slug}/review', [ReviewController::class, 'store'])->name('products.review');
-
+// Route::put('products/{product:slug}', [ProductController::class, 'update'])->name('products.update');
 Route::get('creators/{user:username}', [UserController::class, 'show'])->name('creators');
-Route::put('creators/{user:username}/follow', [UserController::class, 'follow'])->name('creators.follow');
-
-Route::get('upload', [ProductController::class, 'create'])->name('products.create');
-Route::post('upload', [ProductController::class, 'store'])->name('products.store');
 
 Route::get('search', function(Request $request) {
     $products = Product::with('user', 'category');
@@ -65,7 +76,7 @@ Route::get('search', function(Request $request) {
         if ($request->filled('top')) {
             $top = $request->input('top');
             if ($top === 'products-of-the-day') {
-                $products->whereDate('created_at', now());
+                $products->whereDate('created_at', now()->yesterday());
             } elseif ($top === 'products-of-the-week') {
                 $products->whereBetween('created_at', [
                     now()->subWeek()->startOfWeek(), now()->subWeek()->endOfWeek()
@@ -73,14 +84,8 @@ Route::get('search', function(Request $request) {
             } elseif ($top === 'products-of-the-month') {
                 $products->whereMonth('created_at', now()->subMonth()->month)
                       ->whereYear('created_at', now()->year);
-            } elseif ($top === 'products-of-all-time') {
-            } elseif ($top === 'top-users') {
-                $userIds = User::withCount(['products as total_likes' => function($q) {
-                    $q->select(DB::raw('SUM(likes)'));
-                }])->orderByDesc('total_likes')->limit(10)->pluck('id');
-                $products->whereIn('user_id', $userIds);
             }
-            $products->orderByDesc('likes');
+            $products->orderByDesc('total_likes');
         }
 
         if ($request->filled('sort')) {
@@ -88,12 +93,6 @@ Route::get('search', function(Request $request) {
                 case 'popular':
                     $products->orderByDesc('likes');
                     break;
-                // case 'lowest-price':
-                //     $products->orderBy('price', 'asc');
-                //     break;
-                // case 'higher-price':
-                //     $products->orderBy('price', 'desc');
-                //     break;
                 case 'newest':
                     $products->orderByDesc('created_at');
                     break;
@@ -109,15 +108,24 @@ Route::get('search', function(Request $request) {
     ]);
 })->name('search');
 
-Route::post('reports', [ReportController::class, 'store'])->name('reports.store');
 
 Route::prefix('admin')->middleware(Admin::class)->name('admin.')->group(function() {
     Route::get('/', function() {
-        return Inertia::render('admin/index');
+        return Inertia::render('admin/index', [
+        'totalProducts' => Product::count(),
+        'totalTags' => Tag::count(),
+        'totalCategories' => Category::count(),
+        'totalReports' => Report::count(),
+        'reports' => Report::with('user', 'product')->latest()->take(5)->get()
+        ]);
     })->name('index');
 
     Route::resource('products', ProductController::class)->except(['store', 'update']);
     Route::resource('reports', ReportController::class)->only(['index', 'show', 'update', 'destroy']);
     Route::resource('categories', CategoryController::class);
     Route::resource('tags', TagController::class);
+});
+
+Route::get('error', function() {
+    return Inertia::render('ErrorPage', ['status' => 401]);
 });

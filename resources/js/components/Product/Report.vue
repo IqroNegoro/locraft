@@ -31,7 +31,7 @@
 </template>
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3';
-import { ref, defineEmits } from 'vue';
+import { ref } from 'vue';
 
 const emit = defineEmits<{
     (e: 'close'): void

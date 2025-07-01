@@ -32,7 +32,7 @@ class ReviewController extends Controller
     {
     try {
         $data = $request->validated();
-        
+
         Review::create([
             'user_id' => $request->user()->id,
             'product_id' => $product->id,

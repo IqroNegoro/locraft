@@ -22,7 +22,7 @@ class ProductImage extends Model
 
     public function image() : Attribute {
         return Attribute::make(
-            get: fn($value) => $value ? asset('storage/images/products/' . $value) : ''
+            get: fn($value) => $value ? (str_starts_with($value, 'http') ? $value : asset('storage/images/products/' . $value)) : ''
         );
     }
 }

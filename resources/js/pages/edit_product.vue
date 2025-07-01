@@ -23,12 +23,15 @@
                 </div>
                 <div class="flex flex-col group gap-2 relative">
                     <label class="text-sm font-medium leading-none" for="category_id">Category</label>
-                    <input v-if="!form.category_id" v-model="category" autocomplete="off"
+                    <input v-if="!form.category_id && !oldCategory" v-model="category" autocomplete="off"
                         class="flex h-10 w-full rounded-md border border-gray-200 bg-background px-3 py-2 text-base file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
                         id="category_id" placeholder="e.g., Pottery, Jewelry" required>
-                    <button v-else type="button" @click="form.category_id = null"
+                    <button v-else type="button" @click="() => {
+                            form.category_id = null
+                            oldCategory = null;
+                        }"
                         class="w-max flex flex-col items-start">
-                        {{availableCategories.find(v => v.id === form.category_id)?.name }}
+                        {{oldCategory ?? availableCategories.find(v => v.id === form.category_id)?.name }}
                         <span class="text-xs text-gray-500">Click to change category</span>
                     </button>
                     <div v-if="!form.category_id"
@@ -37,7 +40,7 @@
                             <button v-for="category in availableCategories" :key="category.id"
                                 @click="form.category_id = category.id" type="button"
                                 class="flex items-center gap-2 w-full text-left px-4 py-2 text-sm hover:bg-gray-100">
-                                {{ category.name }}
+                            {{ category.name }}
                             </button>
                         </template>
                         <span v-else class="p-2 text-sm">There is no categories</span>
@@ -47,6 +50,12 @@
                 <div class="flex flex-col gap-2">
                     <label class="text-sm font-medium leading-none" for="tags">Product Tags</label>
                     <div class="flex gap-1">
+                        <!-- {{ oldTags }}
+                        <button v-for="(tag, i) in oldTags" :key="tag" @click="() => {
+                            oldTags.splice(i, 1)
+                        }" class="bg-primary rounded-full text-white px-4 py-2 text-sm">
+                            #{{ tag }}
+                        </button> -->
                         <button v-for="(tag, i) in selectedTags" :key="tag" @click="() => {
                             form.tags.splice(i, 1)
                             selectedTags.splice(i, 1)
@@ -78,16 +87,26 @@
                 </div>
                 <div class="flex flex-col gap-1">
                     <label class="text-sm font-medium leading-none" for="pictures">Pictures</label>
-                    <div v-memo="form.images" class="grid grid-cols-4 grid-rows-1 gap-2">
-                        <div v-for="(image, i) in form.images" :key="i" class="relative">
-                            <img :src="render(image)" :alt="image.name"
+                    <div class="grid grid-cols-4 grid-rows-1 gap-2">
+                        <div v-for="(image, i) in oldImages" :key="image.id" class="relative">
+                            <img :src="image.image" :alt="image.alt_text"
                                 class="w-full aspect-square object-cover rounded-lg">
-                            <button type="button" @click="form.images.splice(i, 1)"
+                            <button type="button" @click="oldImages.splice(i, 1)"
                                 class="flex justify-center items-center bg-primary text-white p-1 rounded-full absolute right-1 top-1">
                                 <i class="bx bx-x"></i>
                             </button>
                         </div>
-                        <label v-for="i in 4 - form.images.length" :key="i" type="button" for="pictures"
+                        <template v-memo="form.images">
+                            <div v-for="(image, i) in form.images" :key="i" class="relative">
+                                <img :src="render(image)" :alt="image.name"
+                                    class="w-full aspect-square object-cover rounded-lg">
+                                <button type="button" @click="form.images.splice(i, 1)"
+                                    class="flex justify-center items-center bg-primary text-white p-1 rounded-full absolute right-1 top-1">
+                                    <i class="bx bx-x"></i>
+                                </button>
+                            </div>
+                        </template>
+                        <label v-for="i in 4 - (form.images.length + oldImages.length)" :key="i" type="button" for="pictures"
                             class="w-full rounded-lg aspect-square object-cover bg-gray-200"></label>
                     </div>
                     <span class="text-gray-500 text-xs">First pictures will be used for thumbnail, so make sure showing
@@ -113,8 +132,8 @@
                 <button
                     class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 text-white h-10 px-4 py-2 w-full"
                     type="submit">
-                    <i class="bx bx-upload"></i>
-                    Upload Product
+                    <i class="bx bx-check"></i>
+                    Update Product
                 </button>
             </form>
         </div>
@@ -125,9 +144,10 @@ import { useForm } from '@inertiajs/vue3'
 import { render } from '@/lib/utils';
 import { ref, watch } from 'vue';
 import Quill from '@/components/Quill.vue';
-import { ICategory, ITag } from '@/types';
+import { ICategory, IProduct, IProductImage, ITag } from '@/types';
 
 const props = defineProps<{
+    product: IProduct,
     categories: ICategory[]
     tags: ITag[]
 }>();
@@ -141,14 +161,17 @@ const form = useForm<{
     images: File[]
     link: string
 }>({
-    name: '',
-    sub: '',
-    story: '',
+    name: props.product.name,
+    sub: props.product.sub,
+    story: props.product.story,
     category_id: null,
-    tags: [],
+    tags: props.product.tags.map(v => v.id),
     images: [],
-    link: '',
+    link: props.product.link,
 });
+
+const oldCategory = ref<string | null>(props.product.category.name);
+const oldImages = ref<IProductImage[]>(props.product.images);
 
 const category = ref<string>("");
 const tag = ref<string>("");
@@ -158,7 +181,7 @@ const availableCategories = ref<{
     name: string
 }[]>(props.categories);
 
-const selectedTags = ref<string[]>([]);
+const selectedTags = ref<string[]>(props.product.tags.map(v => v.name));
 const availableTags = ref<{
     id: number,
     name: string

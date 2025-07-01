@@ -31,6 +31,7 @@ class StoreProductRequest extends FormRequest
             'tags' => 'array|max:5',
             'tags.*' => 'integer|exists:tags,id',
             'story' => 'required|string',
+            'link' => 'nullable|string|url',
         ];
     }
 
@@ -43,6 +44,7 @@ class StoreProductRequest extends FormRequest
             'images' => 'Images',
             'images.*' => 'Image',
             'story' => 'Story',
+            'link' => 'Link',
         ];
     }
 }

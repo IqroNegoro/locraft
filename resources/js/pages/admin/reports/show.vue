@@ -6,7 +6,7 @@
                 <span class="text-gray-500">
                     Reporter
                 </span>
-                <Link :href="route('products.show', report.user?.username)" class="flex gap-2">
+                <Link :href="route('creators', report.user?.username)" class="flex gap-2">
                     <Avatar :src="report.user?.avatar" class="w-12 h-12" />
                     <div class="flex flex-col">
                         <span> {{ report.user?.name }} </span>

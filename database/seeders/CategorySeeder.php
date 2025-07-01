@@ -33,6 +33,14 @@ class CategorySeeder extends Seeder
             ['name' => 'Automotive', 'slug' => 'automotive'],
             ['name' => 'Garden', 'slug' => 'garden'],
             ['name' => 'Furniture', 'slug' => 'furniture'],
+            ['name' => 'Home Decor', 'slug' => 'home-decor'],
+            ['name' => 'Outdoor', 'slug' => 'outdoor'],
+            ['name' => 'Art', 'slug' => 'art'],
+            ['name' => 'Collectibles', 'slug' => 'collectibles'],
+            ['name' => 'Cosmetics', 'slug' => 'cosmetics'],
+            ['name' => 'Kitchenware', 'slug' => 'kitchenware'],
+            ['name' => 'Crafts', 'slug' => 'crafts'],
+            ['name' => 'Gadget', 'slug' => 'gadget'],
         ]);
     }
 }
